@@ -47,7 +47,7 @@ class Vue extends JFrame {
  */
 class VueIle extends JPanel {
     private Ile ile;
-    private VueJoueurs vueJoueurs; // Référence à la VueJoueurs
+    private VueJoueurs vueJoueurs; // référence à la VueJoueurs (pour savoir ou dans l'île se positionne les joueurs
 
     public VueIle(Ile ile, VueJoueurs vueJoueurs) {
         this.ile = ile;
@@ -59,21 +59,21 @@ class VueIle extends JPanel {
     public void update() {
         removeAll();
         Zone[][] grille = ile.getGrille();
-        int[][] posJ = vueJoueurs.getPositions(); // Récupère les positions des joueurs
+        int[][] posJ = vueJoueurs.getPositions(); // récupère les positions des joueurs
 
         for (int i = 0; i < grille.length; i++) {
             for (int j = 0; j < grille[i].length; j++) {
-                JPanel cell = new JPanel();
-                cell.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                cell.setBackground(getCouleur(grille[i][j].getEtat()));
+                JPanel pan = new JPanel();
+                pan.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                pan.setBackground(getCouleur(grille[i][j].getEtat()));
 
-                // Vérifier si un joueur est présent sur cette cellule
+                // vérifier si un joueur est présent sur cette panule
                 for (int p = 0; p < posJ.length; p++) {
                     if (posJ[p][0] == i && posJ[p][1] == j) {
-                        cell.setBackground(getCouleurJoueur(p)); // Applique la couleur du joueur
+                        pan.setBackground(getCouleurJoueur(p)); // applique la couleur du joueur
                     }
                 }
-                add(cell);
+                add(pan);
             }
         }
         revalidate();
@@ -98,21 +98,29 @@ class VueIle extends JPanel {
 class VueJoueurs extends JPanel {
     private JLabel[] icones; // les icones des joueurs (un texte pour dire de quel joueur il s'agit
     /*Positions initiales des joeurs :
-    * à fixer : doît dépendre des tailles de l'île
-    * l'île doit (probablement) être un attribut de vueJoueurs
     * (les différentes dépendences sont à modifier)
     */
     private Ile ile;
-    private int[][] pos = {{0, 0}, {4, 5}, {0, 5}, {4, 0}};
     private int sel = 0;
 
+    private int[][] pos;
+
     public VueJoueurs(Vue vue, Ile ile) {
-        // dépend de la vue principale
         this.ile = ile;
         setLayout(new GridLayout(4, 1, 10, 10));
         icones = new JLabel[4];
-        // couleurs différentes des différents joueurs
         Color[] couleurs = {Color.RED, Color.ORANGE, Color.GREEN, Color.BLACK};
+
+        // positions dynamiques centrées aux coins de la grille
+        int r = ile.getRows();
+        int c = ile.getCols();
+        pos = new int[][] {
+                {0, 0},           // coin haut gauche
+                {0, c - 1},       // coin haut droit
+                {r - 1, 0},       // coin bas gauche
+                {r - 1, c - 1}    // coin bas droit
+        };
+
         for (int i = 0; i < 4; i++) {
             int p = i;
             icones[i] = creerIcone("J" + (i + 1), couleurs[i], () -> select(p));
