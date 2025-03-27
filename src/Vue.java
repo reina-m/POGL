@@ -1,6 +1,6 @@
 
 /**
- * À FAIRE : FACTORISER LES VUES EN DIFFÉRENTS FICHIERS 
+ * TODO: FACTORISER LES VUES EN DIFFÉRENTS FICHIERS
  */
 
 import java.awt.*;
@@ -41,6 +41,18 @@ class Vue extends JFrame {
         add(pan, BorderLayout.EAST); // la panel avec les commandes / joueurs à droite
         setVisible(true);
         setLocationRelativeTo(null); // centre la fenêtre
+    }
+    public void update() {
+        vueIle.update();
+    }
+    public void bloquerActions(boolean b) {
+        vueCmd.setActionsEnabled(!b);
+    }
+    public void setControlleur(Controlleur ctrl) {
+        vueCmd.setControlleur(ctrl);
+    }
+    public void setJoueurActif(int j) {
+        vueJoueurs.setJoueurActif(j); // délègue à VueJoueurs
     }
 }
 
@@ -100,13 +112,10 @@ class VueIle extends JPanel {
 
 class VueJoueurs extends JPanel {
     private JLabel[] icones; // les icones des joueurs (un texte pour dire de quel joueur il s'agit
-    /*Positions initiales des joeurs :
-    * (les différentes dépendences sont à modifier)
-    */
     private Ile ile;
     private int sel = 0;
 
-    private int[][] pos;
+    private int[][] pos; // positions initiales des joueurs
 
     public VueJoueurs(Vue vue, Ile ile) {
         this.ile = ile;
@@ -179,18 +188,38 @@ class VueJoueurs extends JPanel {
     private boolean estValide(int x, int y) {
         return x >= 0 && x < ile.getRows() && y >= 0 && y < ile.getCols() && ile.getGrille()[x][y].getEtat() != Zone.Etat.SUBMERGEE;
     }
+
+    public void setJoueurActif(int j) {
+        select(j); // sélectionne graphiquement le joueur
+    }
+    public void assecher(Ile ile, int dx, int dy) {
+        int x = pos[sel][0] + dx;
+        int y = pos[sel][1] + dy;
+        if (x >= 0 && x < ile.getRows() && y >= 0 && y < ile.getCols()) {
+            Zone z = ile.getGrille()[x][y];
+            z.assecher();
+        }
+    }
 }
 
 class VueCommande extends JPanel {
+    private Controlleur ctrl;
+    private JButton finTour; // bouton à ne pas désactiver
+    private boolean modeAssechement = false; // false = déplacement, true = assechement
+
+    public void setControlleur(Controlleur ctrl) {
+        this.ctrl = ctrl;
+    }
+
     public VueCommande(Ile ile, VueIle vueIle, VueJoueurs vueJoueurs) {
         setLayout(new BorderLayout());
-
         // création du panneau pour les flèches de déplacement
         JPanel pan = new JPanel(new GridLayout(3, 3));
         JButton haut = new JButton("↑");
         JButton bas = new JButton("↓");
         JButton gauche = new JButton("←");
         JButton droite = new JButton("→");
+        JButton centre = new JButton("•");
 
         // ajoute des lignes juste après chaque bouton
         Insets padding = new Insets(5, 10, 5, 10); // marges : haut, gauche, bas, droite
@@ -198,34 +227,85 @@ class VueCommande extends JPanel {
         bas.setMargin(padding);
         gauche.setMargin(padding);
         droite.setMargin(padding);
+        centre.setMargin(padding);
 
         haut.setToolTipText("Déplacer vers le haut");
         bas.setToolTipText("Déplacer vers le bas");
         gauche.setToolTipText("Déplacer vers la gauche");
         droite.setToolTipText("Déplacer vers la droite");
+        centre.setToolTipText("Assécher la case actuelle");
 
-        // les actions à faire selon le bouton qui est cliqué (à mettre dans le controlleur?)
-        haut.addActionListener(e -> { vueJoueurs.deplacerJoueur(-1, 0, vueIle); });
-        bas.addActionListener(e -> { vueJoueurs.deplacerJoueur(1, 0, vueIle); });
-        gauche.addActionListener(e -> { vueJoueurs.deplacerJoueur(0, -1, vueIle); });
-        droite.addActionListener(e -> { vueJoueurs.deplacerJoueur(0, 1, vueIle); });
+        // les actions à faire selon le bouton qui est cliqué
+        // actions dynamiques : déplacement ou assechement
+        haut.addActionListener(e -> {
+            if (ctrl != null) {
+                if (modeAssechement) ctrl.effectuerAction(() -> vueJoueurs.assecher(ile, -1, 0));
+                else ctrl.effectuerAction(() -> vueJoueurs.deplacerJoueur(-1, 0, vueIle));
+            }
+        });
+        bas.addActionListener(e -> {
+            if (ctrl != null) {
+                if (modeAssechement) ctrl.effectuerAction(() -> vueJoueurs.assecher(ile, 1, 0));
+                else ctrl.effectuerAction(() -> vueJoueurs.deplacerJoueur(1, 0, vueIle));
+            }
+        });
+        gauche.addActionListener(e -> {
+            if (ctrl != null) {
+                if (modeAssechement) ctrl.effectuerAction(() -> vueJoueurs.assecher(ile, 0, -1));
+                else ctrl.effectuerAction(() -> vueJoueurs.deplacerJoueur(0, -1, vueIle));
+            }
+        });
+        droite.addActionListener(e -> {
+            if (ctrl != null) {
+                if (modeAssechement) ctrl.effectuerAction(() -> vueJoueurs.assecher(ile, 0, 1));
+                else ctrl.effectuerAction(() -> vueJoueurs.deplacerJoueur(0, 1, vueIle));
+            }
+        });
+        centre.addActionListener(e -> {
+            if (ctrl != null && modeAssechement) {
+                ctrl.effectuerAction(() -> vueJoueurs.assecher(ile, 0, 0));
+            }
+        });
 
         // ajouter toutes ces directions au panel
         pan.add(new JLabel()); pan.add(haut); pan.add(new JLabel());
-        pan.add(gauche); pan.add(new JLabel()); pan.add(droite);
+        pan.add(gauche); pan.add(centre); pan.add(droite);
         pan.add(new JLabel()); pan.add(bas); pan.add(new JLabel());
 
+        // mode assèchement / déplacement
+        JButton toggle = new JButton("Mode : Déplacement");
+        toggle.setMargin(padding);
+        toggle.setToolTipText("Cliquez pour changer le mode entre déplacement et assèchement");
+
+        toggle.addActionListener(e -> {
+            modeAssechement = !modeAssechement;
+            toggle.setText("Mode : " + (modeAssechement ? "Assèchement" : "Déplacement"));
+        });
+        add(toggle, BorderLayout.NORTH);
+
         // création du bouton "Fin de tour"
-        JButton finTour = new JButton("Fin de tour");
+        finTour = new JButton("Fin de tour");
         finTour.setToolTipText("Terminer le tour et inonder trois zones aléatoires");
         finTour.setMargin(padding);
         finTour.addActionListener(e -> {
-            ile.inonderAleatoire();
-            vueIle.update();
+            if (ctrl != null) ctrl.finDeTour();
         });
 
         // ne pas oublier : ajouter les contrôles et le bouton "Fin de tour" dans la vue
         add(pan, BorderLayout.CENTER);
         add(finTour, BorderLayout.SOUTH);
     }
+    public void setActionsEnabled(boolean enabled) {
+        // active ou désactive tous les boutons sauf finTour
+        for (Component c : this.getComponents()) {
+            if (c instanceof JPanel) {
+                for (Component b : ((JPanel) c).getComponents()) {
+                    if (b instanceof JButton) {
+                        b.setEnabled(enabled);
+                    }
+                }
+            }
+        }
+    }
+
 }
