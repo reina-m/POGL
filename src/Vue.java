@@ -21,8 +21,10 @@ class Vue extends JFrame {
     public Vue(Ile ile) {
         this.ile = ile;
         setTitle("L'Île Interdite");
-        setSize(800, 600); // amélioration : resize??
+        setSize(800, 600);
+         // ajuste automatiquement la taille de la fenêtre au contenu
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(true);
         setLayout(new BorderLayout());
 
         // création des différentes vues
@@ -38,6 +40,7 @@ class Vue extends JFrame {
         add(vueIle, BorderLayout.CENTER); // l'île au centre de la vue princpiale
         add(pan, BorderLayout.EAST); // la panel avec les commandes / joueurs à droite
         setVisible(true);
+        setLocationRelativeTo(null); // centre la fenêtre
     }
 }
 
@@ -189,7 +192,19 @@ class VueCommande extends JPanel {
         JButton gauche = new JButton("←");
         JButton droite = new JButton("→");
 
-        // les actions à faire selon le bouton qui est cliqué
+        // ajoute des lignes juste après chaque bouton
+        Insets padding = new Insets(5, 10, 5, 10); // marges : haut, gauche, bas, droite
+        haut.setMargin(padding);
+        bas.setMargin(padding);
+        gauche.setMargin(padding);
+        droite.setMargin(padding);
+
+        haut.setToolTipText("Déplacer vers le haut");
+        bas.setToolTipText("Déplacer vers le bas");
+        gauche.setToolTipText("Déplacer vers la gauche");
+        droite.setToolTipText("Déplacer vers la droite");
+
+        // les actions à faire selon le bouton qui est cliqué (à mettre dans le controlleur?)
         haut.addActionListener(e -> { vueJoueurs.deplacerJoueur(-1, 0, vueIle); });
         bas.addActionListener(e -> { vueJoueurs.deplacerJoueur(1, 0, vueIle); });
         gauche.addActionListener(e -> { vueJoueurs.deplacerJoueur(0, -1, vueIle); });
@@ -202,6 +217,8 @@ class VueCommande extends JPanel {
 
         // création du bouton "Fin de tour"
         JButton finTour = new JButton("Fin de tour");
+        finTour.setToolTipText("Terminer le tour et inonder trois zones aléatoires");
+        finTour.setMargin(padding);
         finTour.addActionListener(e -> {
             ile.inonderAleatoire();
             vueIle.update();
