@@ -1,5 +1,5 @@
 public class ZoneElementaire extends Zone {
-    enum Element {
+    public enum Element {
         AIR, FEU, EAU, TERRE
     }
     private Element element;

@@ -1,9 +1,8 @@
 import java.util.*;
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Random;
+
 public class Ile {
     private Zone[][] grille;
     private final int rows, cols;
@@ -18,17 +17,43 @@ public class Ile {
                 grille[i][j] = new Zone();
             }
         }
+        init();
+    }
+    
+    /**
+     * Fonction qui place les zones spéciales (héliport, zone élémentaires) dans l'île
+     */
+    public void init() {
+        List<Point> pos = new ArrayList<>();
+        // on exclus les bords car c'est là où les joueurs sont placés
+        for (int i = 1; i < rows - 1; i++) {
+            for (int j = 1; j < cols - 1; j++) {
+                pos.add(new Point(i, j));
+            }
+        }
+        Collections.shuffle(pos); // on mélange les positions
+
+        // placer héliport
+        Point p = pos.removeFirst();
+        grille[p.x][p.y] = new Heliport();
+
+        // placer 2 zones pour chaque élément
+        for (ZoneElementaire.Element e : ZoneElementaire.Element.values()) {
+            for (int k = 0; k < 2; k++) {
+                Point z = pos.removeFirst();
+                grille[z.x][z.y] = new ZoneElementaire(e);
+            }
+        }
+        // le reste en Zone normale (déjà fait dans le constructeur)
     }
 
+    // getters : 
     public int getRows() {
         return rows;
     }
-
     public int getCols() {
         return cols;
     }
-
-
     public Zone[][] getGrille() {
         return grille;
     }
