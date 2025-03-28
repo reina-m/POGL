@@ -39,6 +39,7 @@ public class Controlleur implements ActionListener {
     }
 
     public void finDeTour() {
+        // TODO : innonder aléatoire ne doit pas innoder des cases déjà submergées
         ile.inonderAleatoire();
         actionsRestantes = 3;
         joueurCourant = (joueurCourant + 1) % 4; // on change le joueur courant

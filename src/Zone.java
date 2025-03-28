@@ -24,4 +24,8 @@ public class Zone {
     public void assecher() {
         if (etat == Etat.INONDEE) etat = Etat.NORMALE;
     }
+    // par défaut, ce n'est pas une zone spéciale
+    public boolean estElementaire() { return false; }
+    public boolean estHeliport() { return false; }
 }
+
