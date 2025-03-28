@@ -1,7 +1,4 @@
 public class ZoneElementaire extends Zone {
-    public enum Element {
-        AIR, FEU, EAU, TERRE
-    }
     private Element element;
 
     public ZoneElementaire(Element element) {

@@ -109,29 +109,18 @@ class VueIle extends JPanel {
     }
 }
 
-
 class VueJoueurs extends JPanel {
-    private JLabel[] icones; // les icones des joueurs (un texte pour dire de quel joueur il s'agit
+    private JLabel[] icones;
     private Ile ile;
+    private Joueur[] joueurs;
     private int sel = 0;
-
-    private int[][] pos; // positions initiales des joueurs
 
     public VueJoueurs(Vue vue, Ile ile) {
         this.ile = ile;
+        this.joueurs = ile.getJoueurs();
         setLayout(new GridLayout(4, 1, 10, 10));
         icones = new JLabel[4];
         Color[] couleurs = {Color.RED, Color.ORANGE, Color.GREEN, Color.BLACK};
-
-        // positions dynamiques centrées aux coins de la grille
-        int r = ile.getRows();
-        int c = ile.getCols();
-        pos = new int[][] {
-                {0, 0},           // coin haut gauche
-                {0, c - 1},       // coin haut droit
-                {r - 1, 0},       // coin bas gauche
-                {r - 1, c - 1}    // coin bas droit
-        };
 
         for (int i = 0; i < 4; i++) {
             int p = i;
@@ -141,7 +130,6 @@ class VueJoueurs extends JPanel {
     }
 
     private JLabel creerIcone(String nom, Color couleur, Runnable clic) {
-        // des trucs esthétique. risquent d'être changés
         JLabel lbl = new JLabel(nom, SwingConstants.CENTER);
         lbl.setOpaque(true);
         lbl.setBackground(couleur);
@@ -157,10 +145,14 @@ class VueJoueurs extends JPanel {
     }
 
     public int[][] getPositions() {
+        int[][] pos = new int[4][2];
+        for (int i = 0; i < 4; i++) {
+            pos[i][0] = joueurs[i].getX();
+            pos[i][1] = joueurs[i].getY();
+        }
         return pos;
     }
 
-    // pour la 'bordure' si on clique sur l'icône du joueur
     private void select(int p) {
         sel = p;
         resetBords();
@@ -174,31 +166,20 @@ class VueJoueurs extends JPanel {
     }
 
     public void deplacerJoueur(int dx, int dy, VueIle vueIle) {
-        int x = pos[sel][0] + dx;
-        int y = pos[sel][1] + dy;
-        if (estValide(x, y)) {
-            pos[sel][0] = x;
-            pos[sel][1] = y;
-        }
+        joueurs[sel].deplacer(dx, dy, ile);
         vueIle.update();
     }
 
-    /*Dis si le mouvement est valide ou pas (si on est hors bords / on va dans une zone submergée)
-    * il y a beaucoup d'autres cas à considérer / fonctions à coder pour améliorer ce projet */
-    private boolean estValide(int x, int y) {
-        return x >= 0 && x < ile.getRows() && y >= 0 && y < ile.getCols() && ile.getZone(x,y).getEtat() != Zone.Etat.SUBMERGEE;
+    public void assecher(Ile ile, int dx, int dy) {
+        joueurs[sel].assecher(ile, dx, dy);
     }
 
     public void setJoueurActif(int j) {
-        select(j); // sélectionne graphiquement le joueur
+        select(j);
     }
-    public void assecher(Ile ile, int dx, int dy) {
-        int x = pos[sel][0] + dx;
-        int y = pos[sel][1] + dy;
-        if (x >= 0 && x < ile.getRows() && y >= 0 && y < ile.getCols()) {
-            Zone z = ile.getZone(x,y);
-            z.assecher();
-        }
+
+    public Joueur getJoueurActif() {
+        return joueurs[sel];
     }
 }
 

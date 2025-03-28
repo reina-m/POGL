@@ -6,6 +6,7 @@ import java.util.Random;
 public class Ile {
     private Zone[][] grille;
     private final int rows, cols;
+    private Joueur[] joueurs;
 
     public Ile(int rows, int cols) {
         this.rows = rows;
@@ -24,6 +25,12 @@ public class Ile {
      * Fonction qui place les zones spéciales (héliport, zone élémentaires) dans l'île
      */
     public void init() {
+        joueurs = new Joueur[4];
+        joueurs[0] = new Joueur(0, 0);
+        joueurs[1] = new Joueur(0, cols - 1);
+        joueurs[2] = new Joueur(rows - 1, 0);
+        joueurs[3] = new Joueur(rows - 1, cols - 1);
+
         List<Point> pos = new ArrayList<>();
         // on exclus les bords car c'est là où les joueurs sont placés
         for (int i = 1; i < rows - 1; i++) {
@@ -38,7 +45,7 @@ public class Ile {
         grille[p.x][p.y] = new Heliport();
 
         // placer 2 zones pour chaque élément
-        for (ZoneElementaire.Element e : ZoneElementaire.Element.values()) {
+        for (Element e : Element.values()) {
             for (int k = 0; k < 2; k++) {
                 Point z = pos.removeFirst();
                 grille[z.x][z.y] = new ZoneElementaire(e);
@@ -58,6 +65,9 @@ public class Ile {
         return grille;
     }
     public Zone getZone(int x, int y) {return grille[x][y];}
+    public Joueur[] getJoueurs() {
+        return joueurs;
+    }
 
     /**
      * Fonction pour innonder aléatoirement la grille après chaque fin de tour
