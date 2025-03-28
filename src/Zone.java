@@ -21,8 +21,6 @@ public class Zone {
         if (etat == Etat.NORMALE) etat = Etat.INONDEE;
         else if (etat == Etat.INONDEE) etat = Etat.SUBMERGEE;
     }
-
-    /*ATTENTION : FONCTION NON ENCORE CODÉE COMME OPTION POUR LES JOUEURS*/
     public void assecher() {
         if (etat == Etat.INONDEE) etat = Etat.NORMALE;
     }

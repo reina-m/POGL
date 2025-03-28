@@ -32,6 +32,7 @@ public class Ile {
     public Zone[][] getGrille() {
         return grille;
     }
+    public Zone getZone(int x, int y) {return grille[x][y];}
 
     /**
      * Fonction pour innonder aléatoirement la grille après chaque fin de tour

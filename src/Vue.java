@@ -186,7 +186,7 @@ class VueJoueurs extends JPanel {
     /*Dis si le mouvement est valide ou pas (si on est hors bords / on va dans une zone submergée)
     * il y a beaucoup d'autres cas à considérer / fonctions à coder pour améliorer ce projet */
     private boolean estValide(int x, int y) {
-        return x >= 0 && x < ile.getRows() && y >= 0 && y < ile.getCols() && ile.getGrille()[x][y].getEtat() != Zone.Etat.SUBMERGEE;
+        return x >= 0 && x < ile.getRows() && y >= 0 && y < ile.getCols() && ile.getZone(x,y).getEtat() != Zone.Etat.SUBMERGEE;
     }
 
     public void setJoueurActif(int j) {
@@ -196,7 +196,7 @@ class VueJoueurs extends JPanel {
         int x = pos[sel][0] + dx;
         int y = pos[sel][1] + dy;
         if (x >= 0 && x < ile.getRows() && y >= 0 && y < ile.getCols()) {
-            Zone z = ile.getGrille()[x][y];
+            Zone z = ile.getZone(x,y);
             z.assecher();
         }
     }

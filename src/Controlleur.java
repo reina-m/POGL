@@ -22,8 +22,9 @@ public class Controlleur implements ActionListener {
         // à compléter plus tard quand on branchera les boutons ici
     }
 
-    // méthodes :
+    //TODO : afficher le nombre de coups restants au joueur
 
+    // méthodes :
     // le joueur peut faire jusqu'à 3 actions max
     public void effectuerAction(Runnable action) {
         if (actionsRestantes > 0) {
