@@ -1,9 +1,10 @@
+package src;
+
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 
 public class Controlleur implements ActionListener {
     // attributs : doit dépendre du modèle

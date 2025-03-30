@@ -1,4 +1,4 @@
-
+package src;
 /**
  * TODO: FACTORISER LES VUES EN DIFFÉRENTS FICHIERS
  */
