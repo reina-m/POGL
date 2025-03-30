@@ -22,7 +22,7 @@ class Vue extends JFrame {
         this.ile = ile;
         setTitle("L'Île Interdite");
         setSize(800, 600);
-         // ajuste automatiquement la taille de la fenêtre au contenu
+        // ajuste automatiquement la taille de la fenêtre au contenu
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(true);
         setLayout(new BorderLayout());
@@ -62,33 +62,42 @@ class Vue extends JFrame {
  */
 class VueIle extends JPanel {
     private Ile ile;
-    private VueJoueurs vueJoueurs; // référence à la VueJoueurs (pour savoir ou dans l'île se positionne les joueurs
+    private VueJoueurs vueJoueurs;
 
     public VueIle(Ile ile, VueJoueurs vueJoueurs) {
         this.ile = ile;
-        this.vueJoueurs = vueJoueurs; // Associer la VueJoueurs
-        setLayout(new GridLayout(ile.getRows(), ile.getCols()));
+        this.vueJoueurs = vueJoueurs;
+        setLayout(new GridBagLayout());
         update();
     }
 
     public void update() {
         removeAll();
         Zone[][] grille = ile.getGrille();
-        int[][] posJ = vueJoueurs.getPositions(); // récupère les positions des joueurs
+        int[][] posJ = vueJoueurs.getPositions();
+
+        GridBagConstraints gbc = new GridBagConstraints();
 
         for (int i = 0; i < grille.length; i++) {
+            // Add offset for hexagonal shape
+            gbc.gridx = (6 - grille[i].length) / 2; // Centers the row
+
             for (int j = 0; j < grille[i].length; j++) {
                 JPanel pan = new JPanel();
                 pan.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                pan.setPreferredSize(new Dimension(60, 60)); //AJOUTER PAR ADAM MAYBE ENLEVER
                 pan.setBackground(getCouleur(grille[i][j].getEtat()));
 
-                // vérifier si un joueur est présent sur cette panule
+                // Check joueurs
                 for (int p = 0; p < posJ.length; p++) {
                     if (posJ[p][0] == i && posJ[p][1] == j) {
-                        pan.setBackground(getCouleurJoueur(p)); // applique la couleur du joueur
+                        pan.setBackground(getCouleurJoueur(p));
                     }
                 }
-                add(pan);
+
+                gbc.gridy = i; // MAYBE USELESS ENLEVER
+                add(pan, gbc);
+                gbc.gridx++; // ,AYBE USELESS ENLEVER
             }
         }
         revalidate();
@@ -97,15 +106,16 @@ class VueIle extends JPanel {
 
     private Color getCouleur(Zone.Etat etat) {
         return switch (etat) {
-            case NORMALE -> Color.WHITE;
+            case NORMALE->Color.WHITE;
             case INONDEE -> Color.CYAN;
             case SUBMERGEE -> Color.BLUE;
+            default-> Color.GRAY;
         };
     }
 
     private Color getCouleurJoueur(int p) {
-        Color[] couleurs = {Color.RED, Color.ORANGE, Color.GREEN, Color.BLACK};
-        return couleurs[p];
+        Color[] colors = {Color.RED, Color.ORANGE, Color.GREEN, Color.BLACK};
+        return colors[p];
     }
 }
 
