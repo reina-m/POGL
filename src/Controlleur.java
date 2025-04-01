@@ -22,15 +22,14 @@ public class Controlleur implements ActionListener {
         // à compléter plus tard quand on branchera les boutons ici
     }
 
-    //TODO : afficher le nombre de coups restants au joueur
-
     // méthodes :
     // le joueur peut faire jusqu'à 3 actions max
     public void effectuerAction(Runnable action) {
         if (actionsRestantes > 0) {
             action.run();
             actionsRestantes--;
-            vue.update(); // méthode à ajouter dans Vue
+            vue.update();
+            vue.updateActionsRestantes(actionsRestantes);
             if (actionsRestantes == 0) {
                 // désactiver les boutons sauf Fin de Tour
                 vue.bloquerActions(true);
@@ -45,6 +44,7 @@ public class Controlleur implements ActionListener {
         joueurCourant = (joueurCourant + 1) % 4; // on change le joueur courant
         vue.setJoueurActif(joueurCourant);
         vue.update();
+        vue.updateActionsRestantes(actionsRestantes);
         vue.bloquerActions(false);
     }
 

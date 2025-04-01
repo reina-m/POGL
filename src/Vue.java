@@ -33,7 +33,7 @@ class Vue extends JFrame {
         vueCmd = new VueCommande(ile, vueIle, vueJoueurs);
 
         JPanel pan = new JPanel(new BorderLayout());
-        pan.setPreferredSize(new Dimension(100, 300));
+        pan.setPreferredSize(new Dimension(190, 300));
         pan.add(vueJoueurs, BorderLayout.NORTH);
         pan.add(vueCmd, BorderLayout.SOUTH);
 
@@ -53,6 +53,9 @@ class Vue extends JFrame {
     }
     public void setJoueurActif(int j) {
         vueJoueurs.setJoueurActif(j); // délègue à VueJoueurs
+    }
+    public void updateActionsRestantes(int actions) {
+        vueCmd.updateActionsRestantes(actions);
     }
 }
 
@@ -187,6 +190,7 @@ class VueCommande extends JPanel {
     private Controlleur ctrl;
     private JButton finTour; // bouton à ne pas désactiver
     private boolean modeAssechement = false; // false = déplacement, true = assechement
+    private JLabel lblActionsRestantes; // pour afficher les actions auxquelles le joueur a droit
 
     public void setControlleur(Controlleur ctrl) {
         this.ctrl = ctrl;
@@ -262,7 +266,18 @@ class VueCommande extends JPanel {
             modeAssechement = !modeAssechement;
             toggle.setText("Mode : " + (modeAssechement ? "Assèchement" : "Déplacement"));
         });
-        add(toggle, BorderLayout.NORTH);
+        JPanel pan2 = new JPanel();
+        pan2.setLayout(new BoxLayout(pan2, BoxLayout.Y_AXIS));
+
+        lblActionsRestantes = new JLabel("Actions restantes: 3", SwingConstants.CENTER);
+        lblActionsRestantes.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblActionsRestantes.setFont(new Font("Arial", Font.BOLD, 14));
+        lblActionsRestantes.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        pan2.add(lblActionsRestantes);
+
+        toggle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        pan2.add(toggle);
+        add(pan2, BorderLayout.NORTH);
 
         // création du bouton "Fin de tour"
         finTour = new JButton("Fin de tour");
@@ -288,5 +303,7 @@ class VueCommande extends JPanel {
             }
         }
     }
-
+    public void updateActionsRestantes(int n) {
+        lblActionsRestantes.setText("Actions restantes: " + n);
+    }
 }
