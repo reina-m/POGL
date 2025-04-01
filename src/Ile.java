@@ -7,6 +7,7 @@ public class Ile {
     private Zone[][] grille;
     private final int rows, cols;
     private Joueur[] joueurs;
+    private Point coordHeliport; // les coordonnées de l'héliport
 
     public Ile(int rows, int cols) {
         this.rows = rows;
@@ -43,6 +44,7 @@ public class Ile {
         // placer héliport
         Point p = pos.removeFirst();
         grille[p.x][p.y] = new Heliport();
+        coordHeliport = p;
 
         // placer 2 zones pour chaque élément
         for (Element e : Element.values()) {
@@ -67,6 +69,9 @@ public class Ile {
     public Zone getZone(int x, int y) {return grille[x][y];}
     public Joueur[] getJoueurs() {
         return joueurs;
+    }
+    public Point getCoordHeliport() {
+        return coordHeliport;
     }
 
     /**

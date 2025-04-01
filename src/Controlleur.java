@@ -45,14 +45,14 @@ public class Controlleur implements ActionListener {
         // donner une clé aléatoire ou rien au joueur :
         Joueur j = ile.getJoueurs()[joueurCourant];
         Random rand = new Random();
-        if(rand.nextDouble() < 0.5) {
+        if(rand.nextDouble() < 0.75) {
             Element[] elements = Element.values();
             Element cle = elements[rand.nextInt(elements.length)];
             j.ajouterCle(cle);
             // affichage dans la console pour l'instant
-            System.out.println("Le joueur " + joueurCourant + " a reçu une clé : " + cle);
+            System.out.println("Le joueur " + (joueurCourant + 1) + " a reçu une clé : " + cle);
         } else {
-            System.out.println("Le joueur " + joueurCourant + "n'a rien reçu.");
+            System.out.println("Le joueur " + (joueurCourant + 1) + "n'a rien reçu.");
         }
         joueurCourant = (joueurCourant + 1) % 4; // on change le joueur courant
         vue.setJoueurActif(joueurCourant);
@@ -60,6 +60,10 @@ public class Controlleur implements ActionListener {
         vue.updateActionsRestantes(actionsRestantes);
         vue.updateInfosJoueurs();
         vue.bloquerActions(false);
+        if (aGagne()) {
+            JOptionPane.showMessageDialog(null, "Vous avez gagné !");
+            System.exit(0); // ou reset game plus tard
+        }
     }
 
     public void recupererArtefact() {
@@ -77,5 +81,15 @@ public class Controlleur implements ActionListener {
         vue.update();
         vue.updateInfosJoueurs();
     }
+    private boolean aGagne() {
+        // vérifie que tous les 4 éléments sont collectés par n'importe quel joueur
+        boolean a = EnumSet.allOf(Element.class)
+                .stream()
+                .allMatch(e -> Arrays.stream(ile.getJoueurs()).anyMatch(j -> j.artefacts().contains(e)));
 
+        // vérifie si tous les joueurs sont sur l'héliport
+        Point h = ile.getCoordHeliport();
+        return a && Arrays.stream(ile.getJoueurs())
+                .allMatch(j -> j.getX() == h.x && j.getY() == h.y);
+    }
 }
