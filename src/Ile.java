@@ -9,14 +9,18 @@ public class Ile {
     private Joueur[] joueurs;
     private Point coordHeliport; // les coordonnées de l'héliport
 
-    public Ile(int rows, int cols) {
-        this.rows = rows;
-        this.cols = cols;
+    public Ile() {
+        this.rows = 10;
+        this.cols = 10;
         grille = new Zone[rows][cols];
 
         for (int i = 0; i < getRows(); i++) {
             for (int j = 0; j < getCols(); j++) {
                 grille[i][j] = new Zone();
+                if (!estIle(i, j)) {
+                    grille[i][j].inonder();
+                    grille[i][j].inonder();
+                }
             }
         }
         init();
@@ -27,16 +31,18 @@ public class Ile {
      */
     public void init() {
         joueurs = new Joueur[4];
-        joueurs[0] = new Joueur(0, 0);
-        joueurs[1] = new Joueur(0, cols - 1);
-        joueurs[2] = new Joueur(rows - 1, 0);
-        joueurs[3] = new Joueur(rows - 1, cols - 1);
+        joueurs[0] = new Joueur(2, 4);
+        joueurs[1] = new Joueur(2, 5);
+        joueurs[2] = new Joueur(7, 4);
+        joueurs[3] = new Joueur(7, 5);
 
         List<Point> pos = new ArrayList<>();
         // on exclus les bords car c'est là où les joueurs sont placés
         for (int i = 1; i < rows - 1; i++) {
             for (int j = 1; j < cols - 1; j++) {
-                pos.add(new Point(i, j));
+                if (estIle(i, j) && !((i == 2 && (j == 4 || j == 5)) || (i == 7 && (j == 4 || j == 5)))) {
+                    pos.add(new Point(i, j));
+                }
             }
         }
         Collections.shuffle(pos); // on mélange les positions
@@ -70,8 +76,19 @@ public class Ile {
     public Joueur[] getJoueurs() {
         return joueurs;
     }
-    public Point getCoordHeliport() {
-        return coordHeliport;
+    public Point getCoordHeliport() {return coordHeliport;}
+
+    private boolean estIle(int i, int j) {
+
+        if (i < 2 || i > 7) return false;
+        if (i == 2 || i == 7) {
+            return (j >= 4 && j <= 5);
+        } else if (i == 3 || i == 6) {
+            return (j >= 3 && j <= 6);
+        } else if (i == 4 || i == 5) {
+            return (j >= 2 && j <= 7);
+        }
+        return false;
     }
 
     /**

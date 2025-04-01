@@ -87,7 +87,6 @@ class VueIle extends JPanel {
                 JPanel pan = new JPanel();
                 pan.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 Zone zone = grille[i][j];
-
                 if (zone instanceof ZoneElementaire ze) {
                     Element e = ze.getElement();
                     switch (e) {

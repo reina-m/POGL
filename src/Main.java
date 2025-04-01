@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 public class Main {
     public static void main(String[] args) {
-        Ile ile = new Ile(5, 6);
+        Ile ile = new Ile();
         Vue vue = new Vue(ile);
         Controlleur ctrl = new Controlleur(ile, vue);
         vue.setControlleur(ctrl); // à coder dans Vue

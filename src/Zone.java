@@ -25,6 +25,7 @@ public class Zone {
         if (etat == Etat.INONDEE) etat = Etat.NORMALE;
     }
     // par défaut, ce n'est pas une zone spéciale
+    public boolean estAccessible() { return true; } // par défaut oui
     public boolean estElementaire() { return false; }
     public boolean estHeliport() { return false; }
 }
