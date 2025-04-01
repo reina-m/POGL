@@ -1,11 +1,14 @@
-import java.util.*;
-import java.awt.*;
+package src;
+
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
+import java.awt.Point;
 
 public class Ile {
     private Zone[][] grille;
-    private final int rows, cols;
+    private final int rows = 6; //MODIFIERPARADAM
     private Joueur[] joueurs;
     private Point coordHeliport; // les coordonnées de l'héliport
 
@@ -14,8 +17,16 @@ public class Ile {
         this.cols = 10;
         grille = new Zone[rows][cols];
 
-        for (int i = 0; i < getRows(); i++) {
-            for (int j = 0; j < getCols(); j++) {
+        grille = new Zone[6][]; //MODIFIERPARADAM
+        grille[0] = new Zone[2];
+        grille[1] = new Zone[4];
+        grille[2] = new Zone[6];
+        grille[3] = new Zone[6];
+        grille[4] = new Zone[4];
+        grille[5] = new Zone[2];
+
+        for (int i = 0; i < grille.length; i++) { //MODIFIERPARADAM
+            for (int j = 0; j < grille[i].length; j++) {
                 grille[i][j] = new Zone();
                 if (!estIle(i, j)) {
                     grille[i][j].inonder();
@@ -25,11 +36,8 @@ public class Ile {
         }
         init();
     }
-    
-    /**
-     * Fonction qui place les zones spéciales (héliport, zone élémentaires) dans l'île
-     */
-    public void init() {
+
+    public void init() { //MODIFIERPARADAM
         joueurs = new Joueur[4];
         joueurs[0] = new Joueur(2, 4);
         joueurs[1] = new Joueur(2, 5);
@@ -45,21 +53,18 @@ public class Ile {
                 }
             }
         }
-        Collections.shuffle(pos); // on mélange les positions
+        Collections.shuffle(pos);
 
-        // placer héliport
         Point p = pos.removeFirst();
         grille[p.x][p.y] = new Heliport();
         coordHeliport = p;
 
-        // placer 2 zones pour chaque élément
         for (Element e : Element.values()) {
             for (int k = 0; k < 2; k++) {
                 Point z = pos.removeFirst();
                 grille[z.x][z.y] = new ZoneElementaire(e);
             }
         }
-        // le reste en Zone normale (déjà fait dans le constructeur)
     }
 
     // getters : 
@@ -91,16 +96,13 @@ public class Ile {
         return false;
     }
 
-    /**
-     * Fonction pour innonder aléatoirement la grille après chaque fin de tour
-     */
     public void inonderAleatoire() {
         Random rand = new Random();
         for (int i = 0; i < 3; i++) {
-            int x = rand.nextInt(getRows());
-            int y = rand.nextInt(getCols());
-            if (grille[x][y].getEtat() != Zone.Etat.SUBMERGEE) {
-                grille[x][y].inonder();
+            int row = rand.nextInt(getRows());
+            int col = rand.nextInt(grille[row].length);
+            if (grille[row][col].getEtat() != Zone.Etat.SUBMERGEE) {
+                grille[row][col].inonder();
             }
         }
     }
