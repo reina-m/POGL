@@ -41,6 +41,19 @@ public class Controlleur implements ActionListener {
         // TODO : innonder aléatoire ne doit pas innoder des cases déjà submergées
         ile.inonderAleatoire();
         actionsRestantes = 3;
+
+        // donner une clé aléatoire ou rien au joueur :
+        Joueur j = ile.getJoueurs()[joueurCourant];
+        Random rand = new Random();
+        if(rand.nextDouble() < 0.5) {
+            Element[] elements = Element.values();
+            Element cle = elements[rand.nextInt(elements.length)];
+            j.ajouterCle(cle);
+            // affichage dans la console pour l'instant
+            System.out.println("Le joueur " + joueurCourant + " a reçu une clé : " + cle);
+        } else {
+            System.out.println("Le joueur " + joueurCourant + "n'a rien reçu.");
+        }
         joueurCourant = (joueurCourant + 1) % 4; // on change le joueur courant
         vue.setJoueurActif(joueurCourant);
         vue.update();
