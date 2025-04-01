@@ -57,6 +57,9 @@ class Vue extends JFrame {
     public void updateActionsRestantes(int actions) {
         vueCmd.updateActionsRestantes(actions);
     }
+    public void updateInfosJoueurs() {
+        vueJoueurs.updateInfos();
+    }
 }
 
 /**
@@ -83,7 +86,21 @@ class VueIle extends JPanel {
             for (int j = 0; j < grille[i].length; j++) {
                 JPanel pan = new JPanel();
                 pan.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                pan.setBackground(getCouleur(grille[i][j].getEtat()));
+                Zone zone = grille[i][j];
+
+                if (zone instanceof ZoneElementaire ze) {
+                    Element e = ze.getElement();
+                    switch (e) {
+                        case AIR -> pan.setBackground(Color.PINK);
+                        case FEU -> pan.setBackground(Color.ORANGE);
+                        case EAU -> pan.setBackground(Color.CYAN.darker());
+                        case TERRE -> pan.setBackground(new Color(139, 69, 19)); // marron
+                    }
+                } else if (zone.estHeliport()) {
+                    pan.setBackground(Color.MAGENTA);
+                } else {
+                    pan.setBackground(getCouleur(zone.getEtat()));
+                }
 
                 // vérifier si un joueur est présent sur cette panule
                 for (int p = 0; p < posJ.length; p++) {
@@ -116,6 +133,7 @@ class VueJoueurs extends JPanel {
     private JLabel[] icones;
     private Ile ile;
     private Joueur[] joueurs;
+    private JLabel[] infoLabels = new JLabel[4];
     private int sel = 0;
 
     public VueJoueurs(Vue vue, Ile ile) {
@@ -127,8 +145,23 @@ class VueJoueurs extends JPanel {
 
         for (int i = 0; i < 4; i++) {
             int p = i;
-            icones[i] = creerIcone("J" + (i + 1), couleurs[i], () -> select(p));
-            add(icones[i]);
+            JPanel joueurPanel = new JPanel();
+            joueurPanel.setLayout(new BorderLayout());
+
+            JLabel nom = creerIcone("J" + (i + 1), couleurs[i], () -> select(p));
+            icones[i] = nom;
+
+            // pour afficher les artéfacts / les clés des différents joueurs
+            JLabel infos = new JLabel("Clés:  /  Artefacts: ");
+            infos.setFont(new Font("Arial", Font.PLAIN, 10));
+            infos.setHorizontalAlignment(SwingConstants.CENTER);
+
+            infoLabels[i] = infos;
+
+            joueurPanel.add(nom, BorderLayout.CENTER);
+            joueurPanel.add(infos, BorderLayout.SOUTH);
+
+            add(joueurPanel);
         }
     }
 
@@ -183,6 +216,13 @@ class VueJoueurs extends JPanel {
 
     public Joueur getJoueurActif() {
         return joueurs[sel];
+    }
+    public void updateInfos() {
+        for (int i = 0; i < joueurs.length; i++) {
+            String cles = joueurs[i].cles().toString();
+            String artefacts = joueurs[i].artefacts().toString();
+            infoLabels[i].setText("Clés: " + cles + " / Artefacts: " + artefacts);
+        }
     }
 }
 
@@ -279,24 +319,37 @@ class VueCommande extends JPanel {
         pan2.add(toggle);
         add(pan2, BorderLayout.NORTH);
 
-        // création du bouton "Fin de tour"
+        // panel pour les boutons en bas (artefact + fin de tour)
+        JPanel pan3 = new JPanel();
+        pan3.setLayout(new BoxLayout(pan3, BoxLayout.Y_AXIS));
+        
+        JButton recupArtefact = new JButton("Récupérer artefact");
+        recupArtefact.setToolTipText("Tente de récupérer un artefact sur cette zone");
+        recupArtefact.setMargin(padding);
+        recupArtefact.setAlignmentX(Component.CENTER_ALIGNMENT);
+        recupArtefact.addActionListener(e -> {
+            if (ctrl != null) ctrl.recupererArtefact();
+        });
+        add(pan, BorderLayout.CENTER);
+        pan3.add(recupArtefact);
+        
         finTour = new JButton("Fin de tour");
         finTour.setToolTipText("Terminer le tour et inonder trois zones aléatoires");
         finTour.setMargin(padding);
+        finTour.setAlignmentX(Component.CENTER_ALIGNMENT);
         finTour.addActionListener(e -> {
             if (ctrl != null) ctrl.finDeTour();
         });
-
-        // ne pas oublier : ajouter les contrôles et le bouton "Fin de tour" dans la vue
-        add(pan, BorderLayout.CENTER);
-        add(finTour, BorderLayout.SOUTH);
+        pan3.add(Box.createVerticalStrut(5)); // petit espace entre les boutons
+        pan3.add(finTour);
+        add(pan3, BorderLayout.SOUTH);
     }
     public void setActionsEnabled(boolean enabled) {
         // active ou désactive tous les boutons sauf finTour
         for (Component c : this.getComponents()) {
             if (c instanceof JPanel) {
                 for (Component b : ((JPanel) c).getComponents()) {
-                    if (b instanceof JButton) {
+                    if (b instanceof JButton btn && btn != finTour) {
                         b.setEnabled(enabled);
                     }
                 }

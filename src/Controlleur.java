@@ -58,7 +58,24 @@ public class Controlleur implements ActionListener {
         vue.setJoueurActif(joueurCourant);
         vue.update();
         vue.updateActionsRestantes(actionsRestantes);
+        vue.updateInfosJoueurs();
         vue.bloquerActions(false);
+    }
+
+    public void recupererArtefact() {
+        Joueur joueur = ile.getJoueurs()[joueurCourant];
+        Zone z = ile.getZone(joueur.getX(), joueur.getY());
+
+        boolean ok = joueur.recupererArtefact(z);
+        if (ok) {
+            System.out.println("Artefact récupérée !");
+        } else {
+            System.out.println("Pas d’artefact ou pas de clé !");
+        }
+
+        effectuerAction(() -> {});
+        vue.update();
+        vue.updateInfosJoueurs();
     }
 
 }

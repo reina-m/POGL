@@ -14,6 +14,9 @@ public class Joueur {
 
     public int getX() { return x; }
     public int getY() { return y; }
+    public Set<Element> cles() { return cles; }
+    public Set<Element> artefacts() { return artefacts; }
+
     public void setX(int x) { this.x = x; }
     public void setY(int y) { this.y = y; }
 
