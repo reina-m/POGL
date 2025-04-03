@@ -1,3 +1,5 @@
+package src;
+
 public class ZoneElementaire extends Zone {
     private Element element;
 
