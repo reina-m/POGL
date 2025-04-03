@@ -21,10 +21,9 @@ class Vue extends JFrame {
     public Vue(Ile ile) {
         this.ile = ile;
         setTitle("L'Île Interdite");
-        setSize(800, 600);
+        setSize(839, 676);
          // ajuste automatiquement la taille de la fenêtre au contenu
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(true);
         setLayout(new BorderLayout());
 
         // création des différentes vues
@@ -80,39 +79,43 @@ class VueIle extends JPanel {
     public void update() {
         removeAll();
         Zone[][] grille = ile.getGrille();
-        int[][] posJ = vueJoueurs.getPositions(); // récupère les positions des joueurs
+        int[][] posJ = vueJoueurs.getPositions();
 
         for (int i = 0; i < grille.length; i++) {
             for (int j = 0; j < grille[i].length; j++) {
-                JPanel pan = new JPanel();
-                pan.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                Zone zone = grille[i][j];
-                if (zone instanceof ZoneElementaire ze) {
-                    Element e = ze.getElement();
-                    switch (e) {
-                        case AIR -> pan.setBackground(Color.PINK);
-                        case FEU -> pan.setBackground(Color.ORANGE);
-                        case EAU -> pan.setBackground(Color.CYAN.darker());
-                        case TERRE -> pan.setBackground(new Color(139, 69, 19)); // marron
-                    }
-                } else if (zone.estHeliport()) {
-                    pan.setBackground(Color.MAGENTA);
-                } else {
-                    pan.setBackground(getCouleur(zone.getEtat()));
+                JLabel lbl = new JLabel();
+
+                try {
+                    String nom = i + "_" + j + ".png";
+                    java.net.URL url = getClass().getResource("/img/" + nom);
+                    if (url == null) nom = "eau.png";
+
+                    ImageIcon icon = new ImageIcon(getClass().getResource("/img/" + nom));
+                    lbl.setIcon(icon);
+                    
+                } catch (Exception e) {
+                    lbl.setBackground(Color.PINK); // fallback
+                    lbl.setOpaque(true);
                 }
 
-                // vérifier si un joueur est présent sur cette panule
+                lbl.setPreferredSize(new Dimension(16, 16));
+
+                // si joueur présent, on colore par dessus
                 for (int p = 0; p < posJ.length; p++) {
                     if (posJ[p][0] == i && posJ[p][1] == j) {
-                        pan.setBackground(getCouleurJoueur(p)); // applique la couleur du joueur
+                        lbl.setOpaque(true);
+                        lbl.setBackground(getCouleurJoueur(p));
                     }
                 }
-                add(pan);
+
+                add(lbl);
             }
         }
+
         revalidate();
         repaint();
     }
+
 
     private Color getCouleur(Zone.Etat etat) {
         return switch (etat) {

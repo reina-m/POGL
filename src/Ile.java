@@ -78,7 +78,7 @@ public class Ile {
     }
     public Point getCoordHeliport() {return coordHeliport;}
 
-    private boolean estIle(int i, int j) {
+    public boolean estIle(int i, int j) {
 
         if (i < 2 || i > 7) return false;
         if (i == 2 || i == 7) {
