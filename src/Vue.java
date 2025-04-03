@@ -6,6 +6,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
+
 
 /**
  * Vue principale du jeu. Créer les différentes vues et affiche
@@ -67,11 +69,11 @@ class Vue extends JFrame {
  */
 class VueIle extends JPanel {
     private Ile ile;
-    private VueJoueurs vueJoueurs; // référence à la VueJoueurs (pour savoir ou dans l'île se positionne les joueurs
+    private VueJoueurs vueJoueurs;
 
     public VueIle(Ile ile, VueJoueurs vueJoueurs) {
         this.ile = ile;
-        this.vueJoueurs = vueJoueurs; // Associer la VueJoueurs
+        this.vueJoueurs = vueJoueurs;
         setLayout(new GridLayout(ile.getRows(), ile.getCols()));
         update();
     }
@@ -83,39 +85,36 @@ class VueIle extends JPanel {
 
         for (int i = 0; i < grille.length; i++) {
             for (int j = 0; j < grille[i].length; j++) {
-                JLabel lbl = new JLabel();
+                // chaque case est un layered pane
+                JLayeredPane pan = new JLayeredPane();
+                pan.setPreferredSize(new Dimension(64, 64));
 
-                try {
-                    String nom = i + "_" + j + ".png";
-                    java.net.URL url = getClass().getResource("/img/" + nom);
-                    if (url == null) nom = "eau.png";
+                // fond de la tuile
+                String nom = i + "_" + j + ".png";
+                java.net.URL url = getClass().getResource("/img/" + nom);
+                if (url == null) nom = "eau.png";
+                JLabel fond = new JLabel(new ImageIcon(getClass().getResource("/img/" + nom)));
+                fond.setBounds(0, 0, 64, 64);
+                pan.add(fond, JLayeredPane.DEFAULT_LAYER); // fond en dessous
 
-                    ImageIcon icon = new ImageIcon(getClass().getResource("/img/" + nom));
-                    lbl.setIcon(icon);
-                    
-                } catch (Exception e) {
-                    lbl.setBackground(Color.PINK); // fallback
-                    lbl.setOpaque(true);
-                }
-
-                lbl.setPreferredSize(new Dimension(16, 16));
-
-                // si joueur présent, on colore par dessus
+                // joueurs (superposés)
+                int n = 0;
                 for (int p = 0; p < posJ.length; p++) {
                     if (posJ[p][0] == i && posJ[p][1] == j) {
-                        lbl.setOpaque(true);
-                        lbl.setBackground(getCouleurJoueur(p));
+                        JLabel pj = new JLabel(new ImageIcon(getClass().getResource("/img/j" + p + ".png")));
+                        pj.setBounds(5 * n, -5, 64, 64); // petit décalage horizontal
+                        pan.add(pj, JLayeredPane.PALETTE_LAYER); // au-dessus
+                        n++;
                     }
                 }
 
-                add(lbl);
+                add(pan);
             }
         }
 
         revalidate();
         repaint();
     }
-
 
     private Color getCouleur(Zone.Etat etat) {
         return switch (etat) {
