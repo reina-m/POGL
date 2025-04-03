@@ -75,6 +75,8 @@ class VueIle extends JPanel {
         this.ile = ile;
         this.vueJoueurs = vueJoueurs;
         setLayout(new GridLayout(ile.getRows(), ile.getCols()));
+        new Timer(100, e -> repaint()).start();
+
         update();
     }
 
@@ -101,7 +103,7 @@ class VueIle extends JPanel {
                 int n = 0;
                 for (int p = 0; p < posJ.length; p++) {
                     if (posJ[p][0] == i && posJ[p][1] == j) {
-                        JLabel pj = new JLabel(new ImageIcon(getClass().getResource("/img/j" + p + ".png")));
+                        JLabel pj = new JLabel(new ImageIcon(getClass().getResource("/img/j" + p + ".gif")));
                         pj.setBounds(5 * n, -5, 64, 64); // petit décalage horizontal
                         pan.add(pj, JLayeredPane.PALETTE_LAYER); // au-dessus
                         n++;
