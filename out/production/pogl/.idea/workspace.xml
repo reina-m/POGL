@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="52999165-79de-438e-8b37-66f05591fdac" name="Changes" comment="zones innondées / submergées" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Fonctionnalités" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="GitLabMergeRequestFiltersHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPENED&quot;,
+    &quot;assignee&quot;: {
+      &quot;type&quot;: &quot;org.jetbrains.plugins.gitlab.mergerequest.ui.filters.GitLabMergeRequestsFiltersValue.MergeRequestsMemberFilterValue.MergeRequestsAssigneeFilterValue&quot;,
+      &quot;username&quot;: &quot;reina.al-masri&quot;,
+      &quot;fullname&quot;: &quot;Reina Al Masri&quot;
+    }
+  }
+}</component>
+  <component name="GitLabMergeRequestsSettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;first&quot;: &quot;https://gitlab.dsi.universite-paris-saclay.fr/reina.al-masri/pogl.git&quot;,
+    &quot;second&quot;: &quot;2b4f5711-eb9d-459a-a5db-a4492d83d929&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2ufgfKAceBBL2yBGxEN2ppuoxaZ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Controlleur.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Application.src.Main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "Affichage",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/reina/Desktop/Semestre 2/pogl-projet",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/img" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/.idea" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Controlleur" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Controlleur" />
+      <module name="pogl-projet" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="pogl" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="src.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="src.Main" />
+      <module name="pogl" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="src.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.src.Main" />
+        <item itemvalue="Application.Controlleur" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.117" />
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.117" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="52999165-79de-438e-8b37-66f05591fdac" name="Changes" comment="" />
+      <created>1742645144607</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1742645144607</updated>
+      <workItem from="1742645145882" duration="1950000" />
+      <workItem from="1742822521514" duration="200000" />
+      <workItem from="1742823564625" duration="128000" />
+      <workItem from="1742823743926" duration="589000" />
+      <workItem from="1742825452721" duration="1454000" />
+      <workItem from="1742832545321" duration="1581000" />
+      <workItem from="1743073074199" duration="5505000" />
+      <workItem from="1743185170081" duration="6681000" />
+      <workItem from="1743331064905" duration="1599000" />
+      <workItem from="1743333298268" duration="687000" />
+      <workItem from="1743336800223" duration="747000" />
+      <workItem from="1743520708668" duration="10601000" />
+      <workItem from="1743681700382" duration="2559000" />
+      <workItem from="1743685357209" duration="559000" />
+      <workItem from="1743685989109" duration="2082000" />
+      <workItem from="1743688157046" duration="1580000" />
+      <workItem from="1743701532731" duration="4723000" />
+      <workItem from="1743706785030" duration="495000" />
+    </task>
+    <task id="LOCAL-00001" summary="Premiers fichiers (semi-complétés, non testés) pour un début">
+      <option name="closed" value="true" />
+      <created>1742647089234</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1742647089234</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Premiers fichiers (semi-complétés, non testés) pour un début">
+      <option name="closed" value="true" />
+      <created>1742822640541</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1742822640541</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Fichier en plus">
+      <option name="closed" value="true" />
+      <created>1742822704694</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1742822704694</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Une première version très simple du jeu (faite par adam aussi, en parallèle).">
+      <option name="closed" value="true" />
+      <created>1742833709449</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1742833709449</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Une première version très simple du jeu (plein de Warnings) (faite par adam aussi, en parallèle).">
+      <option name="closed" value="true" />
+      <created>1742833856212</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1742833856212</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Fix : positions des joueurs">
+      <option name="closed" value="true" />
+      <created>1743074024465</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1743074024465</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Fix : positions des joueurs">
+      <option name="closed" value="true" />
+      <created>1743074058772</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1743074058772</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Fix : positions des joueurs">
+      <option name="closed" value="true" />
+      <created>1743074079715</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1743074079715</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Petites modifications dans vue">
+      <option name="closed" value="true" />
+      <created>1743074852832</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1743074852832</updated>
+    </task>
+    <task id="LOCAL-00010" summary="3 actions possibles maximum + mode assèchement pour assècher une zone (si cela est possible)">
+      <option name="closed" value="true" />
+      <created>1743077914944</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1743077914944</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Méthode : getZone">
+      <option name="closed" value="true" />
+      <created>1743189296061</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1743189296061</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Zones spéciales">
+      <option name="closed" value="true" />
+      <created>1743190265811</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1743190265811</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Modification de l'initialisation de la grille">
+      <option name="closed" value="true" />
+      <created>1743191223325</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1743191223325</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Modification : nouvelle classe joueur, simplification de vue">
+      <option name="closed" value="true" />
+      <created>1743192890022</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1743192890022</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Modification : zones spéciales, nouvelle classe joueur, simplification de vue">
+      <option name="closed" value="true" />
+      <created>1743192964500</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1743192964500</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Package, gestion des problèmes avec git">
+      <option name="closed" value="true" />
+      <created>1743333862284</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1743333862284</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Gestion des problèmes avec git">
+      <option name="closed" value="true" />
+      <created>1743333887271</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1743333887271</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Affichage des actions restantes pour chaque joueur">
+      <option name="closed" value="true" />
+      <created>1743522482924</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1743522482924</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Chaque joueur reçoit une clé (ou pas) à la fin de chaque tour">
+      <option name="closed" value="true" />
+      <created>1743523078891</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1743523078892</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Affichages des zones spéciales, clés et artéfacts des joueurs, ajout du bouton récupérer artéfact. L'affichage est à modifier. Certains aspects logiques sont à modifier. Ceci est un début.">
+      <option name="closed" value="true" />
+      <created>1743524997671</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1743524997671</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Condition de gagner">
+      <option name="closed" value="true" />
+      <created>1743525911488</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1743525911489</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Ile en hexagone (est moche, affichage à modifier)">
+      <option name="closed" value="true" />
+      <created>1743531481158</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1743531481158</updated>
+    </task>
+    <task id="LOCAL-00023" summary="affichage avec des images personnelles">
+      <option name="closed" value="true" />
+      <created>1743689672838</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1743689672838</updated>
+    </task>
+    <task id="LOCAL-00024" summary="affichage de joueurs">
+      <option name="closed" value="true" />
+      <created>1743704311430</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1743704311430</updated>
+    </task>
+    <task id="LOCAL-00025" summary="animation des joueurs">
+      <option name="closed" value="true" />
+      <created>1743704923079</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1743704923079</updated>
+    </task>
+    <task id="LOCAL-00026" summary="zones innondées / submergées">
+      <option name="closed" value="true" />
+      <created>1743706948757</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1743706948757</updated>
+    </task>
+    <task id="LOCAL-00027" summary="zones innondées / submergées">
+      <option name="closed" value="true" />
+      <created>1743707274811</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1743707274811</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Premiers fichiers (semi-complétés, non testés) pour un début" />
+    <MESSAGE value="Fichier en plus" />
+    <MESSAGE value="Une première version très simple du jeu (faite par adam aussi, en parallèle)." />
+    <MESSAGE value="Une première version très simple du jeu (plein de Warnings) (faite par adam aussi, en parallèle)." />
+    <MESSAGE value="Fix : positions des joueurs" />
+    <MESSAGE value="Petites modifications dans vue" />
+    <MESSAGE value="3 actions possibles maximum + mode assèchement pour assècher une zone (si cela est possible)" />
+    <MESSAGE value="Méthode : getZone" />
+    <MESSAGE value="Zones spéciales" />
+    <MESSAGE value="Modification de l'initialisation de la grille" />
+    <MESSAGE value="Modification : nouvelle classe joueur, simplification de vue" />
+    <MESSAGE value="Modification : zones spéciales, nouvelle classe joueur, simplification de vue" />
+    <MESSAGE value="Package, gestion des problèmes avec git" />
+    <MESSAGE value="Gestion des problèmes avec git" />
+    <MESSAGE value="Affichage des actions restantes pour chaque joueur" />
+    <MESSAGE value="Chaque joueur reçoit une clé (ou pas) à la fin de chaque tour" />
+    <MESSAGE value="Affichages des zones spéciales, clés et artéfacts des joueurs, ajout du bouton récupérer artéfact. L'affichage est à modifier. Certains aspects logiques sont à modifier. Ceci est un début." />
+    <MESSAGE value="Condition de gagner" />
+    <MESSAGE value="Ile en hexagone (est moche, affichage à modifier)" />
+    <MESSAGE value="affichage avec des images personnelles" />
+    <MESSAGE value="affichage de joueurs" />
+    <MESSAGE value="animation des joueurs" />
+    <MESSAGE value="zones innondées / submergées" />
+    <option name="LAST_COMMIT_MESSAGE" value="zones innondées / submergées" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/Main.java</url>
+          <line>7</line>
+          <properties class="Main" method="main">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
