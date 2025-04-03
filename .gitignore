@@ -3,3 +3,5 @@
 
 # Ignore build outputs
 out/
+/pogl.iml
+/pogl-project.iml

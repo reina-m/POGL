@@ -1,5 +1,3 @@
-package src;
-
 import java.util.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -41,7 +39,7 @@ public class Joueur {
     }
 
     public boolean estValide(Ile ile, int x, int y) {
-        return x >= 0 && y >= 0 && x < ile.getRows() && y < ile.getCols(x) //MODIFERPARADAM
+        return x >= 0 && y >= 0 && x < ile.getRows() && y < ile.getCols() //MODIFERPARADAM
                 && ile.getZone(x, y).getEtat() != Zone.Etat.SUBMERGEE;
     }
 
@@ -63,7 +61,7 @@ public class Joueur {
     public void assecher(Ile ile, int dx, int dy) {
         int tx = x + dx;
         int ty = y + dy;
-        if (tx >= 0 && ty >= 0 && tx < ile.getRows() && ty < ile.getCols(tx)) { //MODIFIERPARADAM
+        if (tx >= 0 && ty >= 0 && tx < ile.getRows() && ty < ile.getCols()) { //MODIFIERPARADAM
             ile.getZone(tx, ty).assecher();
         }
     }

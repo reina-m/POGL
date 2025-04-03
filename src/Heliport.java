@@ -1,4 +1,3 @@
-package src;
 
 public class Heliport extends Zone {
     public Heliport() {
