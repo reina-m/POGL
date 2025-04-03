@@ -82,30 +82,47 @@ class VueIle extends JPanel {
 
     public void update() {
         removeAll();
+        setLayout(null); // plus de GridLayout, pour éviter de tronquer les joueurs
+
         Zone[][] grille = ile.getGrille();
         int[][] posJ = vueJoueurs.getPositions();
 
+        int tileSize = 64;
         for (int i = 0; i < grille.length; i++) {
             for (int j = 0; j < grille[i].length; j++) {
-                // chaque case est un layered pane
                 JLayeredPane pan = new JLayeredPane();
-                pan.setPreferredSize(new Dimension(64, 64));
+                pan.setBounds(j * tileSize, i * tileSize, tileSize, tileSize); // position absolue
 
-                // fond de la tuile
                 String nom = i + "_" + j + ".png";
                 java.net.URL url = getClass().getResource("/img/" + nom);
                 if (url == null) nom = "eau.png";
-                JLabel fond = new JLabel(new ImageIcon(getClass().getResource("/img/" + nom)));
-                fond.setBounds(0, 0, 64, 64);
-                pan.add(fond, JLayeredPane.DEFAULT_LAYER); // fond en dessous
 
-                // joueurs (superposés)
+                JLabel fond = new JLabel(new ImageIcon(getClass().getResource("/img/" + nom)));
+                fond.setBounds(0, 0, tileSize, tileSize);
+                pan.add(fond, JLayeredPane.DEFAULT_LAYER);
+
+                // état (inn / sub)
+                Zone z = grille[i][j];
+                if (z != null && ile.estIle(i, j)) {
+                    Zone.Etat etat = z.getEtat();
+                    String etatOverlay = switch (etat) {
+                        case INONDEE -> "inn.png";
+                        case SUBMERGEE -> "sub.png";
+                        default -> null;
+                    };
+                    if (etatOverlay != null) {
+                        JLabel ov = new JLabel(new ImageIcon(getClass().getResource("/img/" + etatOverlay)));
+                        ov.setBounds(0, 0, 64, 64); // ou tileSize si tu veux une constante
+                        pan.add(ov, JLayeredPane.MODAL_LAYER);
+                    }
+                }
+
                 int n = 0;
                 for (int p = 0; p < posJ.length; p++) {
                     if (posJ[p][0] == i && posJ[p][1] == j) {
                         JLabel pj = new JLabel(new ImageIcon(getClass().getResource("/img/j" + p + ".gif")));
-                        pj.setBounds(5 * n, -5, 64, 64); // petit décalage horizontal
-                        pan.add(pj, JLayeredPane.PALETTE_LAYER); // au-dessus
+                        pj.setBounds(5 * n, -5, tileSize, tileSize); // décalage horizontal
+                        pan.add(pj, JLayeredPane.DRAG_LAYER);
                         n++;
                     }
                 }
@@ -114,9 +131,12 @@ class VueIle extends JPanel {
             }
         }
 
+        // taille auto en fonction de la grille
+        setPreferredSize(new Dimension(grille[0].length * tileSize, grille.length * tileSize));
         revalidate();
         repaint();
     }
+
 
     private Color getCouleur(Zone.Etat etat) {
         return switch (etat) {

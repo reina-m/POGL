@@ -95,12 +95,16 @@ public class Ile {
      * Fonction pour innonder aléatoirement la grille après chaque fin de tour
      */
     public void inonderAleatoire() {
-        Random rand = new Random();
-        for (int i = 0; i < 3; i++) {
-            int x = rand.nextInt(getRows());
-            int y = rand.nextInt(getCols());
-            if (grille[x][y].getEtat() != Zone.Etat.SUBMERGEE) {
-                grille[x][y].inonder();
+        Random r = new Random();
+        int c = 0;
+        while (c < 3) {
+            int i = r.nextInt(rows), j = r.nextInt(cols);
+            if (estIle(i, j)) {
+                Zone z = grille[i][j];
+                if (z.getEtat() != Zone.Etat.SUBMERGEE) {
+                    z.inonder();
+                    c++;
+                }
             }
         }
     }
