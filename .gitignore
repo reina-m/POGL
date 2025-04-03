@@ -5,3 +5,4 @@
 out/
 /pogl.iml
 /pogl-project.iml
+*.class
