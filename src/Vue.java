@@ -21,6 +21,13 @@ class Vue extends JFrame {
     private Ile ile; // elle dépend du 'modèle', l'île dans notre cas
 
     public Vue(Ile ile) {
+        Font pixelFont = pixelFont(10f);
+
+        // appliquer globalement dans toute l'UI
+        UIManager.put("Label.font", pixelFont);
+        UIManager.put("Button.font", pixelFont);
+        UIManager.put("ToolTip.font", pixelFont);
+
         this.ile = ile;
         setTitle("L'Île Interdite");
         setSize(839, 676);
@@ -61,6 +68,16 @@ class Vue extends JFrame {
     public void updateInfosJoueurs() {
         vueJoueurs.updateInfos();
     }
+
+    protected Font pixelFont(float t) {
+        try {
+            Font f = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/PT.ttf"));
+            return f.deriveFont(t);
+        } catch (Exception e) { // au cas où?
+            return new Font("Monospaced", Font.PLAIN, (int) t); // fallback
+        }
+    }
+
 }
 
 /**
@@ -101,8 +118,30 @@ class VueIle extends JPanel {
                 fond.setBounds(0, 0, tileSize, tileSize);
                 pan.add(fond, JLayeredPane.DEFAULT_LAYER);
 
-                // état (inn / sub)
+
                 Zone z = grille[i][j];
+                // image liée au type de zone : eau2, terre, air, heliport
+                // overlay pour zones spéciales (élémentaires et héliport)
+                if (z != null && ile.estIle(i, j)) {
+                    String sp = null;
+                    if (z.estElementaire()) {
+                        Element e = ((ZoneElementaire) z).getElement();
+                        sp = switch (e) {
+                            case AIR -> "air.png";
+                            case EAU -> "eau2.png";
+                            case TERRE -> "terre.png";
+                            case FEU -> "feu.png";
+                        };
+                    } else if (z.estHeliport()) {
+                        sp = "heliport.png";
+                    }
+                    if (sp != null) {
+                        JLabel overlay = new JLabel(new ImageIcon(getClass().getResource("/img/" + sp)));
+                        overlay.setBounds(0, 0, tileSize, tileSize);
+                        pan.add(overlay, JLayeredPane.PALETTE_LAYER); // juste au-dessus du fond
+                    }
+                }
+
                 if (z != null && ile.estIle(i, j)) {
                     Zone.Etat etat = z.getEtat();
                     String etatOverlay = switch (etat) {
@@ -112,7 +151,7 @@ class VueIle extends JPanel {
                     };
                     if (etatOverlay != null) {
                         JLabel ov = new JLabel(new ImageIcon(getClass().getResource("/img/" + etatOverlay)));
-                        ov.setBounds(0, 0, 64, 64); // ou tileSize si tu veux une constante
+                        ov.setBounds(0, 0, 64, 64);
                         pan.add(ov, JLayeredPane.MODAL_LAYER);
                     }
                 }
@@ -164,19 +203,27 @@ class VueJoueurs extends JPanel {
         this.joueurs = ile.getJoueurs();
         setLayout(new GridLayout(4, 1, 10, 10));
         icones = new JLabel[4];
-        Color[] couleurs = {Color.RED, Color.ORANGE, Color.GREEN, Color.BLACK};
+        Color[] couleurs = {
+                Color.decode("#fcbcd4"), // joueur 0
+                Color.decode("#dcdcdc"), // joueur 1
+                Color.decode("#d4c4ec"), // joueur 2
+                Color.decode("#a4fcec")  // joueur 3
+        };
 
         for (int i = 0; i < 4; i++) {
             int p = i;
             JPanel joueurPanel = new JPanel();
             joueurPanel.setLayout(new BorderLayout());
+            joueurPanel.setPreferredSize(new Dimension(100, 50));
 
+
+            Font px = vue.pixelFont(10f);
             JLabel nom = creerIcone("J" + (i + 1), couleurs[i], () -> select(p));
             icones[i] = nom;
+            nom.setFont(px);
 
             // pour afficher les artéfacts / les clés des différents joueurs
-            JLabel infos = new JLabel("Clés:  /  Artefacts: ");
-            infos.setFont(new Font("Arial", Font.PLAIN, 10));
+            JLabel infos = new JLabel("<html>Clés: " + "<br>Artefacts: " + "</html>");
             infos.setHorizontalAlignment(SwingConstants.CENTER);
 
             infoLabels[i] = infos;
@@ -244,7 +291,8 @@ class VueJoueurs extends JPanel {
         for (int i = 0; i < joueurs.length; i++) {
             String cles = joueurs[i].cles().toString();
             String artefacts = joueurs[i].artefacts().toString();
-            infoLabels[i].setText("Clés: " + cles + " / Artefacts: " + artefacts);
+            infoLabels[i].setText("<html>Clés: " + cles + "<br>Artefacts: " + artefacts + "</html>");
+
         }
     }
 }
@@ -321,7 +369,7 @@ class VueCommande extends JPanel {
         pan.add(new JLabel()); pan.add(bas); pan.add(new JLabel());
 
         // mode assèchement / déplacement
-        JButton toggle = new JButton("Mode : Déplacement");
+        JButton toggle = new JButton("<html><center>Mode :<br>Déplacement</center></html>");
         toggle.setMargin(padding);
         toggle.setToolTipText("Cliquez pour changer le mode entre déplacement et assèchement");
 
@@ -345,8 +393,8 @@ class VueCommande extends JPanel {
         // panel pour les boutons en bas (artefact + fin de tour)
         JPanel pan3 = new JPanel();
         pan3.setLayout(new BoxLayout(pan3, BoxLayout.Y_AXIS));
-        
-        JButton recupArtefact = new JButton("Récupérer artefact");
+
+        JButton recupArtefact = new JButton("<html><center>Récupérer<br>artefact</center></html>");
         recupArtefact.setToolTipText("Tente de récupérer un artefact sur cette zone");
         recupArtefact.setMargin(padding);
         recupArtefact.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -355,8 +403,8 @@ class VueCommande extends JPanel {
         });
         add(pan, BorderLayout.CENTER);
         pan3.add(recupArtefact);
-        
-        finTour = new JButton("Fin de tour");
+
+        finTour = new JButton("<html><center>Fin<br>de tour</center></html>");
         finTour.setToolTipText("Terminer le tour et inonder trois zones aléatoires");
         finTour.setMargin(padding);
         finTour.setAlignmentX(Component.CENTER_ALIGNMENT);
