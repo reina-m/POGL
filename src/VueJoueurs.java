@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 //Associe des couleurs a chaque joueurs
 //lie linterface graphique d lile
 //Cree icone cliquable pour chaque joueurs
-class VueJoueurs extends JPanel {
+class VueJoueurs extends JPanel implements Observer {
     private JLabel[] icones= new JLabel[4];
     private JLabel[] infoLabels = new JLabel[4];
     private Ile ile;
@@ -122,5 +122,9 @@ class VueJoueurs extends JPanel {
             infoLabels[i].setText("<html>Clés: " + cles + "<br>Artefacts: " + artefacts + "</html>");
 
         }
+    }
+    @Override
+    public void update() {
+        updateInfos();
     }
 }

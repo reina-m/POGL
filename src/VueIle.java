@@ -2,7 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
-class VueIle extends JPanel {
+class VueIle extends JPanel implements Observer {
     private final Ile ile;
     private final VueJoueurs vueJoueurs;
     private static final int TILE_SIZE = 64;
@@ -19,7 +19,7 @@ class VueIle extends JPanel {
 
     //Supprime tout les elements actuelles affiches
     //Ajuste la taille en fonction de la taille de grille
-    public void update() {
+    public void updateIle() {
         removeAll();
         Zone[][] grille = ile.getGrille();
         int[][] posJ = vueJoueurs.getPositions();
@@ -116,19 +116,7 @@ class VueIle extends JPanel {
         }
         return null;
     }
-
-    //Getter de couleur
-    private Color getCouleur(Zone.Etat etat) {
-        return switch (etat) {
-            case NORMALE -> Color.WHITE;
-            case INONDEE -> Color.CYAN;
-            case SUBMERGEE -> Color.BLUE;
-        };
-    }
-
-    //Getter couleur joueurs
-    private Color getCouleurJoueur(int p) {
-        Color[] couleurs = {Color.RED, Color.ORANGE, Color.GREEN, Color.BLACK};
-        return couleurs[p];
+    public void update() {
+        updateIle();
     }
 }

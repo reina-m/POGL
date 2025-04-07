@@ -44,6 +44,8 @@ public class Controlleur implements ActionListener {
             Element[] elements = Element.values();
             Element cle = elements[rand.nextInt(elements.length)];
             J.ajouterCle(cle);
+            ile.notifyObservers(); // pour mettre à jour les clés dans l'affichage
+            // affichage intermédiaire
             System.out.println("Le joueur " + (joueurCourant + 1) + " a reçu une clé : " + cle);
         } else {
             System.out.println("Le joueur " + (joueurCourant + 1) + "n'a rien reçu.");
@@ -63,10 +65,9 @@ public class Controlleur implements ActionListener {
         joueurCourant = (joueurCourant + 1) % 4;  //On change le joueur courant
 
         vue.setJoueurActif(joueurCourant);
-        vue.update();
         vue.updateActionsRestantes(actionsRestantes);
-        vue.updateInfosJoueurs();
         vue.bloquerActions(false);
+
         if (aGagne()) {
             JOptionPane.showMessageDialog(null, "Vous avez gagné !");
             System.exit(0);
@@ -86,8 +87,7 @@ public class Controlleur implements ActionListener {
         }
 
         effectuerAction(() -> {});
-        vue.update();
-        vue.updateInfosJoueurs();
+        ile.notifyObservers(); // notifie les vues que l'état a changé
     }
 
     //Verifie si un joueur a recuperer les 4 artefacts

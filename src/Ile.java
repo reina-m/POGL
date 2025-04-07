@@ -2,7 +2,7 @@ import java.util.*;
 import java.awt.*;
 import java.util.List;
 
-public class Ile {
+public class Ile extends Observable {
     private Zone[][] grille;
     private final int rows= 10, cols = 10;
     private Joueur[] joueurs = new Joueur[4];
@@ -92,6 +92,7 @@ public class Ile {
                 }
             }
         }
+        notifyObservers();
     }
 
     //Getters

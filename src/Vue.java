@@ -30,7 +30,11 @@ class Vue extends JFrame {
 
         //Creation des differentes vues
         vueJoueurs = new VueJoueurs(this, ile);
+        ile.addObserver(vueJoueurs);
+
         vueIle = new VueIle(ile, vueJoueurs);
+        ile.addObserver(vueIle);
+
         vueCmd = new VueCommande(ile, vueIle, vueJoueurs);
 
         //Creer le panel a droite
