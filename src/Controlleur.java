@@ -5,24 +5,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Controlleur implements ActionListener {
-    // attributs : doit dépendre du modèle
+
+    //Attributs Modele et vue
     private Ile ile;
     private Vue vue;
-    private int joueurCourant = 0; // index joueur actif
+
+    //Attributs Etat du jeu
+    private int joueurCourant = 0;
     private int actionsRestantes = 3;
 
-    // constructeur :
+    //constructeur
     public Controlleur(Ile ile, Vue vue) {
         this.ile = ile;
         this.vue = vue;
     }
 
     public void actionPerformed(ActionEvent e) {
-        // à compléter plus tard quand on branchera les boutons ici
+        //A completer plus tard quand on branchera les boutons ici
     }
 
-    // méthodes :
-    // le joueur peut faire jusqu'à 3 actions max
+    //Methode pour effectuer action(NB 3 par tour max par joueur)
     public void effectuerAction(Runnable action) {
         if (actionsRestantes > 0) {
             action.run();
@@ -30,30 +32,36 @@ public class Controlleur implements ActionListener {
             vue.update();
             vue.updateActionsRestantes(actionsRestantes);
             if (actionsRestantes == 0) {
-                // désactiver les boutons sauf Fin de Tour
-                vue.bloquerActions(true);
+                vue.bloquerActions(true);//Desactiver les boutons sauf Fin de Tour
             }
         }
     }
 
-    public void finDeTour() {
-        // TODO : innonder aléatoire ne doit pas innoder des cases déjà submergées
-        ile.inonderAleatoire();
-        actionsRestantes = 3;
-
-        // donner une clé aléatoire ou rien au joueur :
-        Joueur j = ile.getJoueurs()[joueurCourant];
+    //Attribue aleatoirement une cle a chaque joueur, utilise dans finDeTour
+    public void attribuerCleAleatoire(Joueur J){
         Random rand = new Random();
         if(rand.nextDouble() < 0.75) {
             Element[] elements = Element.values();
             Element cle = elements[rand.nextInt(elements.length)];
-            j.ajouterCle(cle);
-            // affichage dans la console pour l'instant
+            J.ajouterCle(cle);
             System.out.println("Le joueur " + (joueurCourant + 1) + " a reçu une clé : " + cle);
         } else {
             System.out.println("Le joueur " + (joueurCourant + 1) + "n'a rien reçu.");
         }
-        joueurCourant = (joueurCourant + 1) % 4; // on change le joueur courant
+    }
+
+    //Methode qui fini tour du joueur, indonde des nouvelles zones, donne cle
+    //change au prochain joueur, update le UI et verifie une victoire
+    public void finDeTour() {
+
+        ile.inonderAleatoire();
+        actionsRestantes = 3; //Trois actions par joueur par tour max
+
+        Joueur j = ile.getJoueurs()[joueurCourant];
+        attribuerCleAleatoire(j);//Donner une cle aleatoire ou rien au joueur
+
+        joueurCourant = (joueurCourant + 1) % 4;  //On change le joueur courant
+
         vue.setJoueurActif(joueurCourant);
         vue.update();
         vue.updateActionsRestantes(actionsRestantes);
@@ -61,34 +69,44 @@ public class Controlleur implements ActionListener {
         vue.bloquerActions(false);
         if (aGagne()) {
             JOptionPane.showMessageDialog(null, "Vous avez gagné !");
-            System.exit(0); // ou reset game plus tard
+            System.exit(0);
         }
     }
 
+    //Methode ou joueur essaye de recuperer artefact
     public void recupererArtefact() {
         Joueur joueur = ile.getJoueurs()[joueurCourant];
         Zone z = ile.getZone(joueur.getX(), joueur.getY());
 
         boolean ok = joueur.recupererArtefact(z);
         if (ok) {
-            System.out.println("Artefact récupérée !");
+            System.out.println("Artefact récupérée!");
         } else {
-            System.out.println("Pas d’artefact ou pas de clé !");
+            System.out.println("Pas d’artefact ou pas de clé!");
         }
 
         effectuerAction(() -> {});
         vue.update();
         vue.updateInfosJoueurs();
     }
-    private boolean aGagne() {
-        // vérifie que tous les 4 éléments sont collectés par n'importe quel joueur
-        boolean a = EnumSet.allOf(Element.class)
-                .stream()
-                .allMatch(e -> Arrays.stream(ile.getJoueurs()).anyMatch(j -> j.artefacts().contains(e)));
 
-        // vérifie si tous les joueurs sont sur l'héliport
+    //Verifie si un joueur a recuperer les 4 artefacts
+    private boolean tousArtefactsRecuperes() {
+        return EnumSet.allOf(Element.class).stream()
+                .allMatch(e -> Arrays.stream(ile.getJoueurs())
+                        .anyMatch(j -> j.artefacts().contains(e)));
+    }
+
+    //Verifie si tout les joeurs sont sur le heliport
+    private boolean tousSurHeliport() {
         Point h = ile.getCoordHeliport();
-        return a && Arrays.stream(ile.getJoueurs())
+        return Arrays.stream(ile.getJoueurs())
                 .allMatch(j -> j.getX() == h.x && j.getY() == h.y);
     }
+
+    //Renvoie true si la condition de victoire est remplie
+    private boolean aGagne() {
+        return tousArtefactsRecuperes() && tousSurHeliport();
+    }
+
 }
