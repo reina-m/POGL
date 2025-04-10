@@ -7,6 +7,7 @@ public class Ile extends Observable {
     private final int rows= 10, cols = 10;
     private Joueur[] joueurs = new Joueur[4];
     private Point coordHeliport; //Coordonnées de l'heliport
+    private PaquetCartes<Point> paquetZones; // paquet pour les zones a inonder
 
     //Constructeur ile
     public Ile() {
@@ -14,6 +15,7 @@ public class Ile extends Observable {
         grille = new Zone[rows][cols];
         initialiserGrille();
         initZonesSpeciales();
+        initPaquetZones();
     }
 
     //Initilalise la grille du jeux
@@ -63,6 +65,19 @@ public class Ile extends Observable {
         }
     }
 
+    //Initialise le paquet de cartes des zones valides
+    private void initPaquetZones() {
+        List<Point> c = new ArrayList<>();
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (estIle(i, j)) {
+                    c.add(new Point(i, j));
+                }
+            }
+        }
+        paquetZones = new PaquetCartes<>(c);
+    }
+
     //Verifie si les coordoonees i,j correspondent a une position de depart de joueurs
     private boolean estPositionJoueur(int i, int j) {
         return (i == 2 && (j == 4 || j == 5)) || (i == 7 && (j == 4 || j == 5));
@@ -79,17 +94,21 @@ public class Ile extends Observable {
     }
 
     //Fonction pour innonder aleatoirement la grille apres chaque fin de tour
+    //NOUVELLE VERSION : utilise paquet pour inonder
     public void inonderAleatoire() {
-        Random r = new Random();
         int c = 0;
         while (c < 3) {
-            int i = r.nextInt(rows), j = r.nextInt(cols);
-            if (estIle(i, j)) {
-                Zone z = grille[i][j];
-                if (z.getEtat() != Zone.Etat.SUBMERGEE) {
-                    z.inonder();
-                    c++;
-                }
+            Point p = paquetZones.piocher();
+            if (p == null) break;
+            Zone z = grille[p.x][p.y];
+            if (z.getEtat() == Zone.Etat.NORMALE) {
+                z.inonder();
+                paquetZones.defausser(p);
+                c++;
+            } else if (z.getEtat() == Zone.Etat.INONDEE) {
+                z.inonder();
+                paquetZones.retirerCarte(p); // retire définitivement si submergée
+                c++;
             }
         }
         notifyObservers();
