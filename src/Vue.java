@@ -99,5 +99,4 @@ class Vue extends JFrame {
     public void updateInfosJoueurs() {
         vueJoueurs.updateInfos();
     }
-
 }

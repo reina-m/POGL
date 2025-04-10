@@ -21,6 +21,7 @@ class VueIle extends JPanel implements Observer {
     //Ajuste la taille en fonction de la taille de grille
     public void updateIle() {
         removeAll();
+
         Zone[][] grille = ile.getGrille();
         int[][] posJ = vueJoueurs.getPositions();
 
@@ -33,6 +34,8 @@ class VueIle extends JPanel implements Observer {
 
         //Taille auto en fonction de la grille
         setPreferredSize(new Dimension(grille[0].length * TILE_SIZE, grille.length * TILE_SIZE));
+
+
         revalidate();
         repaint();
     }

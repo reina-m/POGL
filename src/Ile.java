@@ -7,7 +7,8 @@ public class Ile extends Observable {
     private final int rows= 10, cols = 10;
     private Joueur[] joueurs = new Joueur[4];
     private Point coordHeliport; //Coordonnées de l'heliport
-    private PaquetCartes<Point> paquetZones; // paquet pour les zones a inonder
+    private PaquetCartes<Point> paquetZones; // paquet pour les zones a inonder`
+    private PaquetCartes<CarteTirage> paquetCartesJoueur; // paquet pioche des joueurs
 
     //Constructeur ile
     public Ile() {
@@ -16,6 +17,7 @@ public class Ile extends Observable {
         initialiserGrille();
         initZonesSpeciales();
         initPaquetZones();
+        initPaquetCartesJoueur();
     }
 
     //Initilalise la grille du jeux
@@ -78,6 +80,23 @@ public class Ile extends Observable {
         paquetZones = new PaquetCartes<>(c);
     }
 
+    //Initialise le paquet de pioche des joueurs
+    private void initPaquetCartesJoueur() {
+        List<CarteTirage> c = new ArrayList<>();
+        for (Element e : Element.values()) {
+            for (int i = 0; i < 5; i++) c.add(new CarteTirage(CarteTirage.Type.CLE, e));
+        }
+        for (int i = 0; i < 3; i++) c.add(new CarteTirage(CarteTirage.Type.MONTEE_DES_EAUX, null));
+        for (int i = 0; i < 2; i++) c.add(new CarteTirage(CarteTirage.Type.HELICOPTERE, null));
+        for (int i = 0; i < 2; i++) c.add(new CarteTirage(CarteTirage.Type.SAC_SABLE, null));
+
+        paquetCartesJoueur = new PaquetCartes<>(c);
+    }
+    //Renvoie une carte tiree du paquet joueur
+    public CarteTirage piocherCarteJoueur() {
+        return paquetCartesJoueur.piocher();
+    }
+
     //Verifie si les coordoonees i,j correspondent a une position de depart de joueurs
     private boolean estPositionJoueur(int i, int j) {
         return (i == 2 && (j == 4 || j == 5)) || (i == 7 && (j == 4 || j == 5));
@@ -102,16 +121,39 @@ public class Ile extends Observable {
             if (p == null) break;
             Zone z = grille[p.x][p.y];
             if (z.getEtat() == Zone.Etat.NORMALE) {
-                z.inonder();
+
                 paquetZones.defausser(p);
+                z.inonder();
                 c++;
             } else if (z.getEtat() == Zone.Etat.INONDEE) {
+                paquetZones.retirerCarte(p);// retire définitivement si submergée
                 z.inonder();
-                paquetZones.retirerCarte(p); // retire définitivement si submergée
                 c++;
             }
         }
         notifyObservers();
+    }
+    public Point inonderAleatoireEtRetourne() {
+        while (true) {
+            Point p = paquetZones.piocher();
+            if (p == null) return null;
+
+            Zone z = grille[p.x][p.y];
+            if (z.getEtat() == Zone.Etat.NORMALE) {
+                z.inonder();
+                paquetZones.defausser(p);
+                notifyObservers();
+                return p;
+            } else if (z.getEtat() == Zone.Etat.INONDEE) {
+                z.inonder();
+                paquetZones.retirerCarte(p);
+                notifyObservers();
+                return p;
+            }
+        }
+    }
+    public void defausserCarteJoueur(CarteTirage c) {
+        paquetCartesJoueur.defausser(c);
     }
 
     //Getters

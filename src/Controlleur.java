@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class Controlleur implements ActionListener {
 
@@ -13,6 +14,9 @@ public class Controlleur implements ActionListener {
     //Attributs Etat du jeu
     private int joueurCourant = 0;
     private int actionsRestantes = 3;
+    private CarteTirage derniereCarte; // stocke la carte piochée du tour
+    private List<Point> dernieresInondations = new ArrayList<>();
+
 
     //constructeur
     public Controlleur(Ile ile, Vue vue) {
@@ -38,38 +42,56 @@ public class Controlleur implements ActionListener {
     }
 
     //Attribue aleatoirement une cle a chaque joueur, utilise dans finDeTour
-    public void attribuerCleAleatoire(Joueur J){
-        Random rand = new Random();
-        if(rand.nextDouble() < 0.75) {
-            Element[] elements = Element.values();
-            Element cle = elements[rand.nextInt(elements.length)];
-            J.ajouterCle(cle);
-            ile.notifyObservers(); // pour mettre à jour les clés dans l'affichage
-            // affichage intermédiaire
-            System.out.println("Le joueur " + (joueurCourant + 1) + " a reçu une clé : " + cle);
-        } else {
-            System.out.println("Le joueur " + (joueurCourant + 1) + "n'a rien reçu.");
+    public void attribuerCarte(Joueur j){
+        CarteTirage c = ile.piocherCarteJoueur();
+        if (c == null) {
+            System.out.println("Le paquet est vide.");
+            return;
         }
+
+        switch(c.getType()) {
+            case CLE -> {
+                j.ajouterCle(c.getElement());
+                System.out.println("Le joueur " + (joueurCourant+1) + " a reçu une clé : " + c.getElement());
+                ile.defausserCarteJoueur(c);
+            }
+            case MONTEE_DES_EAUX -> {
+                System.out.println("!!! MONTEE DES EAUX !!! (non implémenté) ");
+                // TODO
+            }
+            case HELICOPTERE, SAC_SABLE -> {
+                System.out.println("Pouvoir spécial reçu : " + c.getType());
+                // TODO
+                ile.defausserCarteJoueur(c);
+            }
+        }
+
+        ile.notifyObservers();
     }
 
-    //Methode qui fini tour du joueur, indonde des nouvelles zones, donne cle
-    //change au prochain joueur, update le UI et verifie une victoire
+    //Methode qui fini tour du joueur, inonde zones, pioche carte, affiche résumé
     public void finDeTour() {
+        dernieresInondations.clear();
+        for (int i = 0; i < 3; i++) {
+            Point p = ile.inonderAleatoireEtRetourne();
+            if (p != null) {
+                dernieresInondations.add(p);
+                Zone.Etat etat = ile.getZone(p.x, p.y).getEtat();
+                System.out.println("Zone [" + p.x + "," + p.y + "] → " + etat);
+            }
+        }
 
-        ile.inonderAleatoire();
-        actionsRestantes = 3; //Trois actions par joueur par tour max
-
+        actionsRestantes = 3;
         Joueur j = ile.getJoueurs()[joueurCourant];
-        attribuerCleAleatoire(j);//Donner une cle aleatoire ou rien au joueur
+        attribuerCarte(j);
 
-        joueurCourant = (joueurCourant + 1) % 4;  //On change le joueur courant
-
+        joueurCourant = (joueurCourant + 1) % 4;
         vue.setJoueurActif(joueurCourant);
         vue.updateActionsRestantes(actionsRestantes);
         vue.bloquerActions(false);
 
         if (aGagne()) {
-            JOptionPane.showMessageDialog(null, "Vous avez gagné !");
+            System.out.println("Vous avez gagné !");
             System.exit(0);
         }
     }
@@ -81,7 +103,7 @@ public class Controlleur implements ActionListener {
 
         boolean ok = joueur.recupererArtefact(z);
         if (ok) {
-            System.out.println("Artefact récupérée!");
+            System.out.println("Artefact récupéré !");
         } else {
             System.out.println("Pas d’artefact ou pas de clé!");
         }
