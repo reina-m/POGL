@@ -37,6 +37,7 @@ public class PaquetCartes<T> {
     public void melangerDefausse() {
         Collections.shuffle(defausse);
         pioche.addAll(defausse);
+        melanger();
         defausse.clear();
     }
 

@@ -14,6 +14,8 @@ public class Controlleur implements ActionListener {
     //Attributs Etat du jeu
     private int joueurCourant = 0;
     private int actionsRestantes = 3;
+    private int tour;
+    private int niveauEau = 2; // pour augmenter le nombre de zones innondées après chaque tour
     private CarteTirage derniereCarte; // stocke la carte piochée du tour
     private List<Point> dernieresInondations = new ArrayList<>();
 
@@ -48,7 +50,7 @@ public class Controlleur implements ActionListener {
             System.out.println("Le paquet est vide.");
             return;
         }
-
+        derniereCarte = c;
         switch(c.getType()) {
             case CLE -> {
                 j.ajouterCle(c.getElement());
@@ -56,8 +58,12 @@ public class Controlleur implements ActionListener {
                 ile.defausserCarteJoueur(c);
             }
             case MONTEE_DES_EAUX -> {
-                System.out.println("!!! MONTEE DES EAUX !!! (non implémenté) ");
-                // TODO
+                // TODO : remplacer les affichages temporaires dans le terminal et les mettre dans une vue
+                System.out.println("!!! MONTEE DES EAUX !!! ");
+                niveauEau = Math.min(niveauEau+1, 5); // maximum 5 selon les règles du jeu
+                System.out.println("Niveau d'eau : " + niveauEau);
+                ile.monteeDesEaux(); // mélange la défausse et met au-dessus
+                ile.defausserCarteJoueur(c);
             }
             case HELICOPTERE, SAC_SABLE -> {
                 System.out.println("Pouvoir spécial reçu : " + c.getType());
@@ -65,14 +71,13 @@ public class Controlleur implements ActionListener {
                 ile.defausserCarteJoueur(c);
             }
         }
-
         ile.notifyObservers();
     }
 
     //Methode qui fini tour du joueur, inonde zones, pioche carte, affiche résumé
     public void finDeTour() {
         dernieresInondations.clear();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < niveauEau; i++) {
             Point p = ile.inonderAleatoireEtRetourne();
             if (p != null) {
                 dernieresInondations.add(p);

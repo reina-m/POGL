@@ -78,6 +78,7 @@ public class Ile extends Observable {
             }
         }
         paquetZones = new PaquetCartes<>(c);
+        paquetZones.melanger();
     }
 
     //Initialise le paquet de pioche des joueurs
@@ -91,6 +92,7 @@ public class Ile extends Observable {
         for (int i = 0; i < 2; i++) c.add(new CarteTirage(CarteTirage.Type.SAC_SABLE, null));
 
         paquetCartesJoueur = new PaquetCartes<>(c);
+        paquetCartesJoueur.melanger();
     }
     //Renvoie une carte tiree du paquet joueur
     public CarteTirage piocherCarteJoueur() {
@@ -121,7 +123,6 @@ public class Ile extends Observable {
             if (p == null) break;
             Zone z = grille[p.x][p.y];
             if (z.getEtat() == Zone.Etat.NORMALE) {
-
                 paquetZones.defausser(p);
                 z.inonder();
                 c++;
@@ -139,22 +140,27 @@ public class Ile extends Observable {
             if (p == null) return null;
 
             Zone z = grille[p.x][p.y];
-            if (z.getEtat() == Zone.Etat.NORMALE) {
-                z.inonder();
-                paquetZones.defausser(p);
-                notifyObservers();
-                return p;
-            } else if (z.getEtat() == Zone.Etat.INONDEE) {
-                z.inonder();
+            z.inonder();
+
+            if (z.getEtat() == Zone.Etat.SUBMERGEE) {
                 paquetZones.retirerCarte(p);
-                notifyObservers();
-                return p;
+            } else {
+                paquetZones.defausser(p);
             }
+
+            notifyObservers();
+            return p;
         }
     }
+
     public void defausserCarteJoueur(CarteTirage c) {
         paquetCartesJoueur.defausser(c);
     }
+    public void monteeDesEaux() {
+        paquetZones.melangerDefausse(); // remet la défausse au-dessus
+        System.out.println(" Montée des eaux !");
+    }
+
 
     //Getters
     public int getRows() {return rows;}
