@@ -35,6 +35,7 @@ class Vue extends JFrame {
         ile.addObserver(vueJoueurs);
 
         vueIle = new VueIle(ile, vueJoueurs);
+        vueIle.setMessageFont(pixelFont(10f));
         ile.addObserver(vueIle);
 
         vueCmd = new VueCommande(ile, vueIle, vueJoueurs);
@@ -106,5 +107,8 @@ class Vue extends JFrame {
     //Refraichit l'affichage des informations des joueurs
     public void updateInfosJoueurs() {
         vueJoueurs.updateInfos();
+    }
+    public void afficherMessage(String msg) {
+        vueIle.afficherMessage(msg);
     }
 }

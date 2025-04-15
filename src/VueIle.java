@@ -8,11 +8,15 @@ class VueIle extends JPanel implements Observer {
     private static final int TILE_SIZE = 64;
     private Controlleur ctrl;
 
+    private final Message msgs = new Message();
+
     //Constructeur
     //Initialise vue ile
     public VueIle(Ile ile, VueJoueurs vueJoueurs) {
         this.ile = ile;
         this.vueJoueurs = vueJoueurs;
+        add(msgs); // add overlay component
+        msgs.setBounds(0, 0, 640, 640);
         setLayout(null);
         new Timer(100, e -> repaint()).start();
         update();
@@ -43,8 +47,9 @@ class VueIle extends JPanel implements Observer {
 
         //Taille auto en fonction de la grille
         setPreferredSize(new Dimension(grille[0].length * TILE_SIZE, grille.length * TILE_SIZE));
-
-
+        msgs.setBounds(0, 0, getWidth(), getHeight());
+        add(msgs);
+        setComponentZOrder(msgs, 0);
         revalidate();
         repaint();
     }
@@ -134,5 +139,18 @@ class VueIle extends JPanel implements Observer {
 
     public void setControlleur(Controlleur ctrl) {
         this.ctrl = ctrl;
+    }
+
+    public void afficherMessage(String msg) {
+        msgs.addMessage(msg);
+    }
+    @Override
+    public void setFont(Font f) {
+        super.setFont(f);
+        if (msgs != null) msgs.setFont(f);
+    }
+
+    public void setMessageFont(Font font) {
+        msgs.setFont(font);
     }
 }

@@ -49,32 +49,32 @@ public class Controlleur implements ActionListener {
     public void attribuerCarte(Joueur j){
         CarteTirage c = ile.piocherCarteJoueur();
         if (c == null) {
-            System.out.println("Le paquet est vide.");
+            vue.afficherMessage("Le paquet est vide.");
             return;
         }
         derniereCarte = c;
         switch(c.getType()) {
             case CLE -> {
                 j.ajouterCle(c.getElement());
-                System.out.println("Le joueur " + (joueurCourant+1) + " a reçu une clé : " + c.getElement());
+                vue.afficherMessage("Le joueur " + (joueurCourant+1) + " a reçu une clé : " + c.getElement());
                 ile.defausserCarteJoueur(c);
             }
             case MONTEE_DES_EAUX -> {
                 // TODO : remplacer les affichages temporaires dans le terminal et les mettre dans une vue
-                System.out.println("!!! MONTEE DES EAUX !!! ");
+                vue.afficherMessage("!!! MONTEE DES EAUX !!! ");
                 niveauEau = Math.min(niveauEau+1, 5); // maximum 5 selon les règles du jeu
-                System.out.println("Niveau d'eau : " + niveauEau);
+                vue.afficherMessage("Niveau d'eau : " + niveauEau);
                 ile.monteeDesEaux(); // mélange la défausse et met au-dessus
                 ile.defausserCarteJoueur(c);
             }
             case HELICOPTERE -> {
                 j.ajouterHelico();
-                System.out.println("Pouvoir spécial reçu : " + c.getType());
+                vue.afficherMessage("Pouvoir spécial reçu : " + c.getType());
                 ile.defausserCarteJoueur(c);
             }
             case SAC_SABLE -> {
                 j.ajouterSacDeSable();
-                System.out.println("Pouvoir spécial reçu : " + c.getType());
+                vue.afficherMessage("Pouvoir spécial reçu : " + c.getType());
                 ile.defausserCarteJoueur(c);
             }
         }
@@ -103,7 +103,7 @@ public class Controlleur implements ActionListener {
         vue.bloquerActions(false);
 
         if (aGagne()) {
-            System.out.println("Vous avez gagné !");
+            vue.afficherMessage("Vous avez gagné !");
             System.exit(0);
         }
     }
@@ -115,9 +115,9 @@ public class Controlleur implements ActionListener {
 
         boolean ok = joueur.recupererArtefact(z);
         if (ok) {
-            System.out.println("Artefact récupéré !");
+            vue.afficherMessage("Artefact récupéré !");
         } else {
-            System.out.println("Pas d’artefact ou pas de clé!");
+            vue.afficherMessage("Pas d’artefact ou pas de clé!");
         }
 
         effectuerAction(() -> {});
@@ -131,11 +131,11 @@ public class Controlleur implements ActionListener {
         switch (mode) {
             case SABLE -> {
                 j.utiliserSacDeSable(ile, x, y);
-                System.out.println("Zone assechée avec 🪣 !");
+                vue.afficherMessage("Zone assechée avec 🪣 !");
             }
             case HELICO -> {
                 j.utiliserHelico(x, y, ile);
-                System.out.println("Déplacement avec 🚁 !");
+                vue.afficherMessage("Déplacement avec 🚁 !");
             }
             default -> { return; } // ignore si mode normal
         }
