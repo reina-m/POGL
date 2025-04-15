@@ -30,8 +30,8 @@ class Vue extends JFrame {
 
         //Creation des differentes vues
         vueJoueurs = new VueJoueurs(this, ile);
-        vueJoueurs.setMaximumSize(new Dimension(200, 380));
-        vueJoueurs.setPreferredSize(new Dimension(200, 380));
+        vueJoueurs.setMaximumSize(new Dimension(240, 360));
+        vueJoueurs.setPreferredSize(new Dimension(240, 360));
         ile.addObserver(vueJoueurs);
 
         vueIle = new VueIle(ile, vueJoueurs);
@@ -44,7 +44,7 @@ class Vue extends JFrame {
         //Creer le panel a droite
         JPanel pan = new JPanel();
         pan.setLayout(new BoxLayout(pan, BoxLayout.Y_AXIS));
-        pan.setPreferredSize(new Dimension(190, 200));
+        pan.setPreferredSize(new Dimension(240, 200));
         pan.add(vueJoueurs, BorderLayout.NORTH);
         pan.add(vueCmd, BorderLayout.SOUTH);
 

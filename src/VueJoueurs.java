@@ -18,7 +18,7 @@ class VueJoueurs extends JPanel implements Observer {
     public VueJoueurs(Vue vue, Ile ile) {
         this.ile = ile;
         this.joueurs = ile.getJoueurs();
-        setLayout(new GridLayout(6, 1, 5, 5));
+        setLayout(new GridLayout(6, 1, 5, 7));
 
         Color[] couleurs = {
                 Color.decode("#fcbcd4"),
@@ -34,11 +34,11 @@ class VueJoueurs extends JPanel implements Observer {
             JPanel joueurPanel = new JPanel();
             joueurPanel.setLayout(new BoxLayout(joueurPanel, BoxLayout.X_AXIS));
             joueurPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
-            joueurPanel.setPreferredSize(new Dimension(240, 50));
-            joueurPanel.setMinimumSize(new Dimension(240, 50));
+            joueurPanel.setPreferredSize(new Dimension(240, 70));
+            joueurPanel.setMinimumSize(new Dimension(240, 70));
 
             JLabel icon = new JLabel(new ImageIcon(getClass().getResource("/img/j" + i + ".png")));
-            icon.setPreferredSize(new Dimension(32, 32));
+            icon.setPreferredSize(new Dimension(82, 82));
             icon.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
             icon.setOpaque(true);
             icon.setBackground(couleurs[i]);
@@ -136,20 +136,59 @@ class VueJoueurs extends JPanel implements Observer {
     //Met a jour les informations affiches sous chaque icone de joueur
     public void updateInfos() {
         for (int i = 0; i < joueurs.length; i++) {
-            String cles = joueurs[i].cles().toString();
-            String artefacts = joueurs[i].artefacts().toString();
-            int s = joueurs[i].getSacsDeSable();
-            int h = joueurs[i].getHelicos();
-            infoLabels[i].setText("<html>"
-                    + "Clés: " + "<br>" + cles + "<br>"
-                    + "Artefacts: " + artefacts + "<br>"
-                    + "🪣: " + s + " 🚁: " + h
-                    + "</html>");
+            Joueur j = joueurs[i];
+
+            JPanel joueurPanel = (JPanel) getComponent(i);
+            JPanel infosPanel = (JPanel) joueurPanel.getComponent(3);
+            infosPanel.removeAll();
+
+            // clés row
+            JPanel cleRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
+            cleRow.setOpaque(false);
+            cleRow.add(new JLabel("Clés:"));
+            for (Element e : j.cles()) {
+                cleRow.add(new JLabel(loadIcon("cle_" + e.name().toLowerCase() + ".png")));
+            }
+
+            // artefacts row
+            JPanel arteRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
+            arteRow.setOpaque(false);
+            arteRow.add(new JLabel("Artefacts:"));
+            for (Element e : j.artefacts()) {
+                arteRow.add(new JLabel(loadIcon("artefact_" + e.name().toLowerCase() + ".png")));
+            }
+
+            // pouvoirs row
+            JPanel powRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
+            powRow.setOpaque(false);
+            powRow.add(new JLabel(loadIcon("sac.png")));
+            powRow.add(new JLabel(": " + j.getSacsDeSable()));
+            powRow.add(new JLabel(loadIcon("helico.png")));
+            powRow.add(new JLabel(": " + j.getHelicos()));
+
+            infosPanel.add(cleRow);
+            infosPanel.add(arteRow);
+            infosPanel.add(powRow);
+
+            infosPanel.revalidate();
+            infosPanel.repaint();
         }
     }
+
 
     @Override
     public void update() {
         updateInfos();
     }
+
+    private ImageIcon loadIcon(String name) {
+        java.net.URL url = getClass().getResource("/img/" + name);
+        if (url != null) {
+            ImageIcon icon = new ImageIcon(url);
+            Image img = icon.getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT);
+            return new ImageIcon(img);
+        }
+        return null;
+    }
+
 }
