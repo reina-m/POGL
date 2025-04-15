@@ -30,16 +30,16 @@ class Vue extends JFrame {
 
         //Creation des differentes vues
         vueJoueurs = new VueJoueurs(this, ile);
-        vueJoueurs.setMaximumSize(new Dimension(260, 380));
-        vueJoueurs.setPreferredSize(new Dimension(260, 380));
+        vueJoueurs.setMaximumSize(new Dimension(200, 380));
+        vueJoueurs.setPreferredSize(new Dimension(200, 380));
         ile.addObserver(vueJoueurs);
 
         vueIle = new VueIle(ile, vueJoueurs);
         ile.addObserver(vueIle);
 
         vueCmd = new VueCommande(ile, vueIle, vueJoueurs);
-        vueCmd.setMaximumSize(new Dimension(240, 270));
-        vueCmd.setPreferredSize(new Dimension(240, 270));
+        vueCmd.setMaximumSize(new Dimension(300, 270));
+        vueCmd.setPreferredSize(new Dimension(300, 270));
 
         //Creer le panel a droite
         JPanel pan = new JPanel();

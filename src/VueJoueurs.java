@@ -141,7 +141,7 @@ class VueJoueurs extends JPanel implements Observer {
             int s = joueurs[i].getSacsDeSable();
             int h = joueurs[i].getHelicos();
             infoLabels[i].setText("<html>"
-                    + "Clés: " + cles + "<br>"
+                    + "Clés: " + "<br>" + cles + "<br>"
                     + "Artefacts: " + artefacts + "<br>"
                     + "🪣: " + s + " 🚁: " + h
                     + "</html>");
