@@ -16,10 +16,10 @@ class Vue extends JFrame {
 
     //Constructeur
     public Vue(Ile ile) {
-
+        setResizable(false);
         this.ile = ile;
         setTitle("L'Île Interdite");
-        setSize(839, 676);
+        setSize(839, 670);
 
         //Ajuste automatiquement la taille de la fenêtre au contenu
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -30,16 +30,21 @@ class Vue extends JFrame {
 
         //Creation des differentes vues
         vueJoueurs = new VueJoueurs(this, ile);
+        vueJoueurs.setMaximumSize(new Dimension(260, 380));
+        vueJoueurs.setPreferredSize(new Dimension(260, 380));
         ile.addObserver(vueJoueurs);
 
         vueIle = new VueIle(ile, vueJoueurs);
         ile.addObserver(vueIle);
 
         vueCmd = new VueCommande(ile, vueIle, vueJoueurs);
+        vueCmd.setMaximumSize(new Dimension(240, 270));
+        vueCmd.setPreferredSize(new Dimension(240, 270));
 
         //Creer le panel a droite
-        JPanel pan = new JPanel(new BorderLayout());
-        pan.setPreferredSize(new Dimension(190, 300));
+        JPanel pan = new JPanel();
+        pan.setLayout(new BoxLayout(pan, BoxLayout.Y_AXIS));
+        pan.setPreferredSize(new Dimension(190, 200));
         pan.add(vueJoueurs, BorderLayout.NORTH);
         pan.add(vueCmd, BorderLayout.SOUTH);
 

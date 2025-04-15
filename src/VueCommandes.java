@@ -61,13 +61,13 @@ class VueCommande extends JPanel {
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
 
-        JButton recupArtefact = createButton("<html><center>Récupérer<br>artefact</center></html>", padding, "Tente de récupérer un artefact sur cette zone");
+        JButton recupArtefact = createButton("Artefact", padding, "Tente de récupérer un artefact sur cette zone");
         recupArtefact.setAlignmentX(Component.CENTER_ALIGNMENT);
         recupArtefact.addActionListener(e -> {
             if (ctrl != null) ctrl.recupererArtefact();
         });
 
-        finTour = createButton("<html><center>Fin<br>de tour</center></html>", padding, "Terminer le tour et inonder trois zones aléatoires");
+        finTour = createButton("Fin de tour", padding, "Terminer le tour et inonder trois zones aléatoires");
         finTour.setAlignmentX(Component.CENTER_ALIGNMENT);
         finTour.addActionListener(e -> {
             if (ctrl != null) ctrl.finDeTour();

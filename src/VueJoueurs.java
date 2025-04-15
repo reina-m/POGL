@@ -18,13 +18,13 @@ class VueJoueurs extends JPanel implements Observer {
     public VueJoueurs(Vue vue, Ile ile) {
         this.ile = ile;
         this.joueurs = ile.getJoueurs();
-        setLayout(new GridLayout(6, 1, 10, 10));
+        setLayout(new GridLayout(6, 1, 5, 5));
 
         Color[] couleurs = {
-                Color.decode("#fcbcd4"), //Joueur 0
-                Color.decode("#dcdcdc"), //Joueur 1
-                Color.decode("#d4c4ec"), //Joueur 2
-                Color.decode("#a4fcec")  //Joueur 3
+                Color.decode("#fcbcd4"),
+                Color.decode("#dcdcdc"),
+                Color.decode("#d4c4ec"),
+                Color.decode("#a4fcec")
         };
 
         Font px = vue.pixelFont(10f);
@@ -32,24 +32,42 @@ class VueJoueurs extends JPanel implements Observer {
         for (int i = 0; i < 4; i++) {
             int p = i;
             JPanel joueurPanel = new JPanel();
-            joueurPanel.setLayout(new BorderLayout());
-            joueurPanel.setPreferredSize(new Dimension(90, 60));
+            joueurPanel.setLayout(new BoxLayout(joueurPanel, BoxLayout.X_AXIS));
+            joueurPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+            joueurPanel.setPreferredSize(new Dimension(240, 50));
+            joueurPanel.setMinimumSize(new Dimension(240, 50));
 
-            JLabel nom = creerIcone("J" + (i + 1), couleurs[i], () -> select(p));
-            nom.setFont(px);
-            icones[i] = nom;
+            JLabel icon = new JLabel(new ImageIcon(getClass().getResource("/img/j" + i + ".png")));
+            icon.setPreferredSize(new Dimension(32, 32));
+            icon.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+            icon.setOpaque(true);
+            icon.setBackground(couleurs[i]);
+            icon.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) { select(p); }
+            });
+            icones[i] = icon;
 
-            //Pour afficher les artefacts/les cles des differents joueurs
-            JLabel infos = new JLabel("<html>Clés: " +
-            "<br>Artefacts: " +  "<br>🪣: " + " 🚁: " + "</html>");
-            infos.setHorizontalAlignment(SwingConstants.CENTER);
+            JPanel infosPanel = new JPanel();
+            infosPanel.setLayout(new BoxLayout(infosPanel, BoxLayout.Y_AXIS));
+            infosPanel.setOpaque(false);
+
+            JLabel infos = new JLabel();
+            infos.setFont(px);
+            infos.setPreferredSize(new Dimension(150, 48));
+            infos.setMaximumSize(new Dimension(150, 48));
+            infos.setMinimumSize(new Dimension(150, 48));
             infoLabels[i] = infos;
+            infosPanel.add(infos);
 
-            joueurPanel.add(nom, BorderLayout.CENTER);
-            joueurPanel.add(infos, BorderLayout.SOUTH);
+            joueurPanel.add(Box.createHorizontalStrut(5));
+            joueurPanel.add(icon);
+            joueurPanel.add(Box.createHorizontalStrut(8));
+            joueurPanel.add(infosPanel);
 
             add(joueurPanel);
         }
+        select(0); // sélectionne automatiquement le premier joueur
+        updateInfos();
     }
 
     //Cree un icone cliquable pour representer un joueurs
@@ -122,12 +140,14 @@ class VueJoueurs extends JPanel implements Observer {
             String artefacts = joueurs[i].artefacts().toString();
             int s = joueurs[i].getSacsDeSable();
             int h = joueurs[i].getHelicos();
-            infoLabels[i].setText("<html>Clés: " + cles +
-                    "<br>Artefacts: " + artefacts +
-                    "<br>🪣: " + s + " 🚁: " + h +
-                    "</html>");
+            infoLabels[i].setText("<html>"
+                    + "Clés: " + cles + "<br>"
+                    + "Artefacts: " + artefacts + "<br>"
+                    + "🪣: " + s + " 🚁: " + h
+                    + "</html>");
         }
     }
+
     @Override
     public void update() {
         updateInfos();
