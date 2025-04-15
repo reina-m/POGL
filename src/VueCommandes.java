@@ -72,6 +72,21 @@ class VueCommande extends JPanel {
         finTour.addActionListener(e -> {
             if (ctrl != null) ctrl.finDeTour();
         });
+        JButton btnSable = createButton("Sac de sable", padding, "Assécher n'importe quelle zone");
+        btnSable.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnSable.addActionListener(e -> {
+            if (ctrl != null) ctrl.activerSacDeSable();
+        });
+        JButton btnHelico = createButton("Hélicoptère", padding, "Se déplacer vers n'importe quelle zone");
+        btnHelico.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnHelico.addActionListener(e -> {
+            if (ctrl != null) ctrl.activerHelico();
+        });
+        bottomPanel.add(btnSable);
+        bottomPanel.add(Box.createVerticalStrut(5));
+
+        bottomPanel.add(btnHelico);
+        bottomPanel.add(Box.createVerticalStrut(5));
 
         bottomPanel.add(recupArtefact);
         bottomPanel.add(Box.createVerticalStrut(5));

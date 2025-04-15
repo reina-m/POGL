@@ -18,7 +18,7 @@ class VueJoueurs extends JPanel implements Observer {
     public VueJoueurs(Vue vue, Ile ile) {
         this.ile = ile;
         this.joueurs = ile.getJoueurs();
-        setLayout(new GridLayout(4, 1, 10, 10));
+        setLayout(new GridLayout(6, 1, 10, 10));
 
         Color[] couleurs = {
                 Color.decode("#fcbcd4"), //Joueur 0
@@ -33,14 +33,15 @@ class VueJoueurs extends JPanel implements Observer {
             int p = i;
             JPanel joueurPanel = new JPanel();
             joueurPanel.setLayout(new BorderLayout());
-            joueurPanel.setPreferredSize(new Dimension(100, 50));
+            joueurPanel.setPreferredSize(new Dimension(90, 60));
 
             JLabel nom = creerIcone("J" + (i + 1), couleurs[i], () -> select(p));
             nom.setFont(px);
             icones[i] = nom;
 
             //Pour afficher les artefacts/les cles des differents joueurs
-            JLabel infos = new JLabel("<html>Clés: " + "<br>Artefacts: " + "</html>");
+            JLabel infos = new JLabel("<html>Clés: " +
+            "<br>Artefacts: " +  "<br>🪣: " + " 🚁: " + "</html>");
             infos.setHorizontalAlignment(SwingConstants.CENTER);
             infoLabels[i] = infos;
 
@@ -119,8 +120,12 @@ class VueJoueurs extends JPanel implements Observer {
         for (int i = 0; i < joueurs.length; i++) {
             String cles = joueurs[i].cles().toString();
             String artefacts = joueurs[i].artefacts().toString();
-            infoLabels[i].setText("<html>Clés: " + cles + "<br>Artefacts: " + artefacts + "</html>");
-
+            int s = joueurs[i].getSacsDeSable();
+            int h = joueurs[i].getHelicos();
+            infoLabels[i].setText("<html>Clés: " + cles +
+                    "<br>Artefacts: " + artefacts +
+                    "<br>🪣: " + s + " 🚁: " + h +
+                    "</html>");
         }
     }
     @Override

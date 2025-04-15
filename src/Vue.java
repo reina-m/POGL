@@ -84,6 +84,9 @@ class Vue extends JFrame {
     public void setControlleur(Controlleur ctrl) {
         vueCmd.setControlleur(ctrl);
     }
+    public void setControlleurIle(Controlleur ctrl) {
+        vueIle.setControlleur(ctrl);
+    }
 
     //Implique dans la vue des joueurs , quel joueur est actif
     public void setJoueurActif(int j) {

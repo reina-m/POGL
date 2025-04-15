@@ -7,6 +7,10 @@ public class Joueur {
     private final Set<Element> cles= new HashSet<>();
     private final Set<Element> artefacts= new HashSet<>();
 
+    // pouvoirs spéciaux
+    private int sacsDeSable = 0;
+    private int helicos = 0;
+
     //Contrsucteur
     public Joueur(int x, int y) {
         this.x = x;
@@ -65,11 +69,30 @@ public class Joueur {
         }
     }
 
+    // méthodes d'utilisation des pouvoirs spéciaux :
+    public void ajouterSacDeSable() { sacsDeSable++; }
+    public void utiliserSacDeSable(Ile ile, int x, int y) {
+        if (sacsDeSable > 0 && x >= 0 && y >= 0 && x < ile.getRows() && y < ile.getCols()) {
+            ile.getZone(x, y).assecher();
+            sacsDeSable--;
+        }
+    }
+    public void ajouterHelico() { helicos++; }
+    public void utiliserHelico(int x, int y, Ile ile) {
+        if (helicos > 0 && estValide(ile, x, y)) {
+            this.x = x;
+            this.y = y;
+            helicos--;
+        }
+    }
+
     //Getters
     public int getX() { return x; }
     public int getY() { return y; }
     public Set<Element> cles() { return cles; }
     public Set<Element> artefacts() { return artefacts; }
+    public int getSacsDeSable() { return sacsDeSable; }
+    public int getHelicos() { return helicos; }
 
     //Setters
     public void setX(int x) { this.x = x; }

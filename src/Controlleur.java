@@ -19,6 +19,8 @@ public class Controlleur implements ActionListener {
     private CarteTirage derniereCarte; // stocke la carte piochée du tour
     private List<Point> dernieresInondations = new ArrayList<>();
 
+    public enum ModeSpecial { NORMAL, SABLE, HELICO }
+    private ModeSpecial mode = ModeSpecial.NORMAL;
 
     //constructeur
     public Controlleur(Ile ile, Vue vue) {
@@ -65,9 +67,14 @@ public class Controlleur implements ActionListener {
                 ile.monteeDesEaux(); // mélange la défausse et met au-dessus
                 ile.defausserCarteJoueur(c);
             }
-            case HELICOPTERE, SAC_SABLE -> {
+            case HELICOPTERE -> {
+                j.ajouterHelico();
                 System.out.println("Pouvoir spécial reçu : " + c.getType());
-                // TODO
+                ile.defausserCarteJoueur(c);
+            }
+            case SAC_SABLE -> {
+                j.ajouterSacDeSable();
+                System.out.println("Pouvoir spécial reçu : " + c.getType());
                 ile.defausserCarteJoueur(c);
             }
         }
@@ -115,6 +122,26 @@ public class Controlleur implements ActionListener {
 
         effectuerAction(() -> {});
         ile.notifyObservers(); // notifie les vues que l'état a changé
+    }
+
+    public void activerSacDeSable() { mode = ModeSpecial.SABLE; }
+    public void activerHelico() { mode = ModeSpecial.HELICO; }
+    public void clicSurZone(int x, int y) {
+        Joueur j = ile.getJoueurs()[joueurCourant];
+        switch (mode) {
+            case SABLE -> {
+                j.utiliserSacDeSable(ile, x, y);
+                System.out.println("Zone assechée avec 🪣 !");
+            }
+            case HELICO -> {
+                j.utiliserHelico(x, y, ile);
+                System.out.println("Déplacement avec 🚁 !");
+            }
+            default -> { return; } // ignore si mode normal
+        }
+        mode = ModeSpecial.NORMAL;
+        ile.notifyObservers();
+        vue.update();
     }
 
     //Verifie si un joueur a recuperer les 4 artefacts

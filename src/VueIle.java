@@ -6,6 +6,7 @@ class VueIle extends JPanel implements Observer {
     private final Ile ile;
     private final VueJoueurs vueJoueurs;
     private static final int TILE_SIZE = 64;
+    private Controlleur ctrl;
 
     //Constructeur
     //Initialise vue ile
@@ -29,8 +30,16 @@ class VueIle extends JPanel implements Observer {
             for (int j = 0; j < grille[i].length; j++) {
                 JLayeredPane pan = createZonePanel(i, j, grille[i][j], posJ);
                 add(pan);
+                int finalI = i, finalJ = j;
+                pan.addMouseListener(new MouseAdapter() {
+                    public void mouseClicked(MouseEvent e) {
+                        ctrl.clicSurZone(finalI, finalJ);
+                    }
+                });
+
             }
         }
+
 
         //Taille auto en fonction de la grille
         setPreferredSize(new Dimension(grille[0].length * TILE_SIZE, grille.length * TILE_SIZE));
@@ -121,5 +130,9 @@ class VueIle extends JPanel implements Observer {
     }
     public void update() {
         updateIle();
+    }
+
+    public void setControlleur(Controlleur ctrl) {
+        this.ctrl = ctrl;
     }
 }
