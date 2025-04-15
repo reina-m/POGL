@@ -18,7 +18,7 @@ class VueJoueurs extends JPanel implements Observer {
     public VueJoueurs(Vue vue, Ile ile) {
         this.ile = ile;
         this.joueurs = ile.getJoueurs();
-        setLayout(new GridLayout(6, 1, 5, 7));
+        setLayout(new GridLayout(4, 10, 7, 7));
 
         Color[] couleurs = {
                 Color.decode("#fcbcd4"),
@@ -33,9 +33,6 @@ class VueJoueurs extends JPanel implements Observer {
             int p = i;
             JPanel joueurPanel = new JPanel();
             joueurPanel.setLayout(new BoxLayout(joueurPanel, BoxLayout.X_AXIS));
-            joueurPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
-            joueurPanel.setPreferredSize(new Dimension(240, 70));
-            joueurPanel.setMinimumSize(new Dimension(240, 70));
 
             JLabel icon = new JLabel(new ImageIcon(getClass().getResource("/img/j" + i + ".png")));
             icon.setPreferredSize(new Dimension(82, 82));
@@ -53,9 +50,9 @@ class VueJoueurs extends JPanel implements Observer {
 
             JLabel infos = new JLabel();
             infos.setFont(px);
-            infos.setPreferredSize(new Dimension(150, 48));
-            infos.setMaximumSize(new Dimension(150, 48));
-            infos.setMinimumSize(new Dimension(150, 48));
+            infos.setPreferredSize(new Dimension(150, 96));
+            infos.setMaximumSize(new Dimension(150, 96));
+            infos.setMinimumSize(new Dimension(150, 96));
             infoLabels[i] = infos;
             infosPanel.add(infos);
 
@@ -143,23 +140,21 @@ class VueJoueurs extends JPanel implements Observer {
             infosPanel.removeAll();
 
             // clés row
-            JPanel cleRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
+            JPanel cleRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
             cleRow.setOpaque(false);
-            cleRow.add(new JLabel("Clés:"));
             for (Element e : j.cles()) {
                 cleRow.add(new JLabel(loadIcon("cle_" + e.name().toLowerCase() + ".png")));
             }
 
             // artefacts row
-            JPanel arteRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
+            JPanel arteRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 2));
             arteRow.setOpaque(false);
-            arteRow.add(new JLabel("Artefacts:"));
             for (Element e : j.artefacts()) {
                 arteRow.add(new JLabel(loadIcon("artefact_" + e.name().toLowerCase() + ".png")));
             }
 
             // pouvoirs row
-            JPanel powRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
+            JPanel powRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
             powRow.setOpaque(false);
             powRow.add(new JLabel(loadIcon("sac.png")));
             powRow.add(new JLabel(": " + j.getSacsDeSable()));
@@ -185,7 +180,7 @@ class VueJoueurs extends JPanel implements Observer {
         java.net.URL url = getClass().getResource("/img/" + name);
         if (url != null) {
             ImageIcon icon = new ImageIcon(url);
-            Image img = icon.getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT);
+            Image img = icon.getImage().getScaledInstance(26, 26, Image.SCALE_DEFAULT);
             return new ImageIcon(img);
         }
         return null;
