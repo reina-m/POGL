@@ -104,7 +104,12 @@ public class Controlleur implements ActionListener {
 
         if (aGagne()) {
             vue.afficherMessage("Vous avez gagné !");
-            System.exit(0);
+            // System.exit(0);
+        }
+        String raison = raisonDefaite();
+        if (raison != null) {
+            vue.afficherMessage("Vous avez perdu : " + raison);
+            // System.exit(0);
         }
     }
 
@@ -163,4 +168,72 @@ public class Controlleur implements ActionListener {
         return tousArtefactsRecuperes() && tousSurHeliport();
     }
 
+    //Fonctions pour les conditions de perte
+    private String raisonDefaite() {
+        if (heliportSubmerge()) return "l'héliport a été submergé";
+        if (artefactIrrecuperable()) return "un artefact est devenu irréupérable";
+        if (heliportInaccessible()) return "aucun joueur ne peut atteindre l'héliport";
+        return null;
+    }
+
+    private boolean heliportSubmerge() {
+        Point h = ile.getCoordHeliport();
+        return ile.getZone(h.x, h.y).getEtat() == Zone.Etat.SUBMERGEE;
+    }
+
+    private boolean artefactIrrecuperable() {
+        for (Element e : Element.values()) {
+            boolean zoneEncoreAccessible = false;
+            boolean artefactDejaObtenu = false;
+
+            for (int i = 0; i < ile.getRows(); i++) {
+                for (int j = 0; j < ile.getCols(); j++) {
+                    Zone z = ile.getZone(i, j);
+                    if (z instanceof ZoneElementaire ze && ze.getElement() == e) {
+                        if (z.getEtat() != Zone.Etat.SUBMERGEE) zoneEncoreAccessible = true;
+                    }
+                }
+            }
+
+            for (Joueur j : ile.getJoueurs()) {
+                if (j.artefacts().contains(e)) {
+                    artefactDejaObtenu = true;
+                    break;
+                }
+            }
+
+            if (!zoneEncoreAccessible && !artefactDejaObtenu) return true;
+        }
+        return false;
+    }
+
+    private boolean heliportInaccessible() {
+        Point h = ile.getCoordHeliport();
+        boolean[][] vis = new boolean[ile.getRows()][ile.getCols()];
+        Queue<Point> q = new LinkedList<>();
+
+        for (Joueur j : ile.getJoueurs()) {
+            int x = j.getX(), y = j.getY();
+            q.add(new Point(x, y));
+            vis[x][y] = true;
+        }
+
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
+
+        while (!q.isEmpty()) {
+            Point p = q.poll();
+            if (p.equals(h)) return false;
+            for (int d = 0; d < 4; d++) {
+                int nx = p.x + dx[d], ny = p.y + dy[d];
+                if (nx >= 0 && ny >= 0 && nx < ile.getRows() && ny < ile.getCols()) {
+                    if (!vis[nx][ny] && ile.getZone(nx, ny).getEtat() != Zone.Etat.SUBMERGEE) {
+                        vis[nx][ny] = true;
+                        q.add(new Point(nx, ny));
+                    }
+                }
+            }
+        }
+        return true;
+    }
 }

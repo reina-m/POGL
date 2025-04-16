@@ -7,6 +7,7 @@ class Message extends JComponent {
     public void setFont(Font f) {
         this.font = f;
     }
+    // sous classe d'une ligne de message
     private static class Msg {
         String txt;
         long t0;
@@ -48,8 +49,6 @@ class Message extends JComponent {
 
             float a = m.alpha();
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, a));
-            g2.setColor(new Color(0, 0, 0, 0));
-            g2.fillRoundRect(10, y - 15, g2.getFontMetrics().stringWidth(m.txt) + 12, 20, 8, 8);
             g2.setColor(Color.WHITE);
             g2.drawString(m.txt, 16, y);
             y -= 25;

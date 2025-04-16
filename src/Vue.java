@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 //Cree les vues secondaires
 //Assemble les elements de linterface
 //Applique la police personnalise a toute linterface
-class Vue extends JFrame {
+class Vue extends JPanel {
     private VueIle vueIle;
     private VueJoueurs vueJoueurs;
     private VueCommande vueCmd;
@@ -16,15 +16,15 @@ class Vue extends JFrame {
 
     //Constructeur
     public Vue(Ile ile) {
-        setResizable(false);
+        //setResizable(false);
         this.ile = ile;
-        setTitle("L'Île Interdite");
+        //setTitle("L'Île Interdite");
         setSize(839, 670);
 
         //Ajuste automatiquement la taille de la fenêtre au contenu
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-        setLocationRelativeTo(null); //Centre la fenetre
+        //setLocationRelativeTo(null); //Centre la fenetre
 
         applyGlobalFont(pixelFont(10f));
 

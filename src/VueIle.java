@@ -144,11 +144,6 @@ class VueIle extends JPanel implements Observer {
     public void afficherMessage(String msg) {
         msgs.addMessage(msg);
     }
-    @Override
-    public void setFont(Font f) {
-        super.setFont(f);
-        if (msgs != null) msgs.setFont(f);
-    }
 
     public void setMessageFont(Font font) {
         msgs.setFont(font);

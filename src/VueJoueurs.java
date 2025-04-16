@@ -18,7 +18,7 @@ class VueJoueurs extends JPanel implements Observer {
     public VueJoueurs(Vue vue, Ile ile) {
         this.ile = ile;
         this.joueurs = ile.getJoueurs();
-        setLayout(new GridLayout(4, 10, 7, 7));
+        setLayout(new GridLayout(4, 10, 10, 7));
 
         Color[] couleurs = {
                 Color.decode("#fcbcd4"),
@@ -180,7 +180,7 @@ class VueJoueurs extends JPanel implements Observer {
         java.net.URL url = getClass().getResource("/img/" + name);
         if (url != null) {
             ImageIcon icon = new ImageIcon(url);
-            Image img = icon.getImage().getScaledInstance(26, 26, Image.SCALE_DEFAULT);
+            Image img = icon.getImage().getScaledInstance(32, 26, Image.SCALE_DEFAULT);
             return new ImageIcon(img);
         }
         return null;
