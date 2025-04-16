@@ -30,6 +30,7 @@ public class Main {
         Vue vue = new Vue(ile);
         Controlleur ctrl = new Controlleur(ile, vue);
         vue.setControlleur(ctrl);
+        vue.setControlleurIle(ctrl);
         frame.setResizable(false);
         frame.setSize(839, 668);
         frame.setContentPane(vue);
