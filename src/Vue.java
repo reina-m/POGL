@@ -2,6 +2,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO; //added for win screen
+import java.io.IOException; //added for win screen
 
 //Constructeur
 //Initialise fenetre principale du jeu
@@ -13,6 +15,7 @@ class Vue extends JPanel {
     private VueJoueurs vueJoueurs;
     private VueCommande vueCmd;
     private Ile ile;
+    private JLabel victoryImageLabel; //added for win screen
 
     //Constructeur
     public Vue(Ile ile) {
@@ -56,6 +59,41 @@ class Vue extends JPanel {
         //Enelever si pas besoin apres
         //Font pixelFont = pixelFont(10f);
 
+        //added for win screen
+        victoryImageLabel = new JLabel();
+        victoryImageLabel.setHorizontalAlignment(JLabel.CENTER);
+        victoryImageLabel.setVerticalAlignment(JLabel.CENTER);
+
+    }
+
+    //added for win screen
+    public void displayVictoryImage() {
+        try {
+            // Load the victory image
+            ImageIcon victoryIcon = new ImageIcon(getClass().getResource("/img1.png"));
+
+            // Create a panel to hold the image in the center
+            JPanel victoryPanel = new JPanel(new GridBagLayout());
+            victoryPanel.setOpaque(false);
+
+            // Set the image to the label
+            victoryImageLabel.setIcon(victoryIcon);
+
+            // Add the label to the panel
+            victoryPanel.add(victoryImageLabel);
+
+            // Add the panel to the center of the main view
+            vueIle.add(victoryPanel, BorderLayout.CENTER);
+            vueIle.setComponentZOrder(victoryPanel, 0); // Make sure it's on top
+
+            // Repaint to show the image
+            revalidate();
+            repaint();
+
+        } catch (Exception e) {
+            System.err.println("Error loading victory image: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     //Applique la police donnée à tous les elements de l'interface utilisateur

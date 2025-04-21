@@ -104,6 +104,7 @@ public class Controlleur implements ActionListener {
 
         if (aGagne()) {
             vue.afficherMessage("Vous avez gagné !");
+            vue.displayVictoryImage();//ajouter pour win screen
             // System.exit(0);
         }
         String raison = raisonDefaite();
@@ -165,7 +166,8 @@ public class Controlleur implements ActionListener {
 
     //Renvoie true si la condition de victoire est remplie
     private boolean aGagne() {
-        return tousArtefactsRecuperes() && tousSurHeliport();
+        //return tousArtefactsRecuperes() && tousSurHeliport();
+        return true;
     }
 
     //Fonctions pour les conditions de perte
