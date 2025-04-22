@@ -166,8 +166,7 @@ public class Controlleur implements ActionListener {
 
     //Renvoie true si la condition de victoire est remplie
     private boolean aGagne() {
-        //return tousArtefactsRecuperes() && tousSurHeliport();
-        return true;
+        return tousArtefactsRecuperes() && tousSurHeliport();
     }
 
     //Fonctions pour les conditions de perte
