@@ -7,7 +7,7 @@ public class Joueur {
     private final Set<Element> cles= new HashSet<>();
     private final Set<Element> artefacts= new HashSet<>();
 
-    // pouvoirs spéciaux
+    //pouvoirs speciaux
     private int sacsDeSable = 0;
     private int helicos = 0;
 
@@ -50,7 +50,6 @@ public class Joueur {
         if ((dx != 0 && dy != 0) || (dx == 0 && dy == 0)) {
             return;
         }
-
         int nx = x + dx;
         int ny = y + dy;
 

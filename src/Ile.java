@@ -3,9 +3,9 @@ import java.awt.*;
 import java.util.List;
 
 public class Ile extends Observable {
-    private Zone[][] grille;
-    private final int rows= 10, cols = 10;
-    private Joueur[] joueurs = new Joueur[4];
+    private Zone[][] grille; //Grille represetant l'ile
+    private final int rows= 10, cols = 10; //Dimension de la grille
+    private Joueur[] joueurs = new Joueur[4];//Liste joueur
     private Point coordHeliport; //Coordonnées de l'heliport
     private PaquetCartes<Point> paquetZones; // paquet pour les zones a inonder`
     private PaquetCartes<CarteTirage> paquetCartesJoueur; // paquet pioche des joueurs
@@ -47,7 +47,7 @@ public class Ile extends Observable {
         for (int i = 1; i < rows - 1; i++) {
             for (int j = 1; j < cols - 1; j++) {
                 if (estIle(i, j) && !estPositionJoueur(i, j)) {
-                    positionsDisponibles.add(new Point(i, j));
+                    positionsDisponibles.add(new Point(i, j));//Ajoute les positions valides
                 }
             }
         }
@@ -78,7 +78,7 @@ public class Ile extends Observable {
             }
         }
         paquetZones = new PaquetCartes<>(c);
-        paquetZones.melanger();
+        paquetZones.melanger();//Melange les zone
     }
 
     //Initialise le paquet de pioche des joueurs
@@ -92,7 +92,7 @@ public class Ile extends Observable {
         for (int i = 0; i < 2; i++) c.add(new CarteTirage(CarteTirage.Type.SAC_SABLE, null));
 
         paquetCartesJoueur = new PaquetCartes<>(c);
-        paquetCartesJoueur.melanger();
+        paquetCartesJoueur.melanger();//ici pour melanger cartes
     }
     //Renvoie une carte tiree du paquet joueur
     public CarteTirage piocherCarteJoueur() {
@@ -115,7 +115,7 @@ public class Ile extends Observable {
     }
 
     //Fonction pour innonder aleatoirement la grille apres chaque fin de tour
-    //NOUVELLE VERSION : utilise paquet pour inonder
+    //utilise paquet pour inonder
     public void inonderAleatoire() {
         int c = 0;
         while (c < 3) {
@@ -134,9 +134,11 @@ public class Ile extends Observable {
         }
         notifyObservers();
     }
+
+    //Inonde une zone aleatoire et retourne la zone inondee
     public Point inonderAleatoireEtRetourne() {
         while (true) {
-            Point p = paquetZones.piocher();
+            Point p = paquetZones.piocher();//Tire une carte du paquet de zones
             if (p == null) return null;
 
             Zone z = grille[p.x][p.y];
@@ -153,14 +155,16 @@ public class Ile extends Observable {
         }
     }
 
+    //defaut une carte du paquet des joueurs
     public void defausserCarteJoueur(CarteTirage c) {
         paquetCartesJoueur.defausser(c);
     }
+
+    //Reinitialise le paquet de cartes pour la monte des eaux
     public void monteeDesEaux() {
         paquetZones.melangerDefausse(); // remet la défausse au-dessus
         System.out.println(" Montée des eaux !");
     }
-
 
     //Getters
     public int getRows() {return rows;}

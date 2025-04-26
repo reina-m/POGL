@@ -59,8 +59,7 @@ public class Controlleur implements ActionListener {
                 vue.afficherMessage("Le joueur " + (joueurCourant+1) + " a reçu une clé : " + c.getElement());
                 ile.defausserCarteJoueur(c);
             }
-            case MONTEE_DES_EAUX -> {
-                // TODO : remplacer les affichages temporaires dans le terminal et les mettre dans une vue
+            case MONTEE_DES_EAUX ->
                 vue.afficherMessage("!!! MONTEE DES EAUX !!! ");
                 niveauEau = Math.min(niveauEau+1, 5); // maximum 5 selon les règles du jeu
                 vue.afficherMessage("Niveau d'eau : " + niveauEau);
@@ -103,8 +102,7 @@ public class Controlleur implements ActionListener {
         vue.bloquerActions(false);
 
         if (aGagne()) {
-            vue.afficherMessage("Vous avez gagné !");
-            vue.displayVictoryImage();//ajouter pour win screen
+            vue.afficherMessage("Vous avez gagné !")
             // System.exit(0);
         }
         String raison = raisonDefaite();
