@@ -104,3 +104,9 @@ Nous avons pris soin de :
 
 Ce projet nous a permis de renforcer nos compétences en programmation orientée objet, en Java, et en travail collaboratif.
 
+
+# Ressources 
+tuiles : https://brysiaa.itch.io/pixel-tileset-grass-island
+joueurs : https://agusstt.itch.io/tiny-ghost-animated
+clés : https://drxwat.itch.io/pixel-art-key
+artefacts : https://gamedevshlok.itch.io/heartpack
