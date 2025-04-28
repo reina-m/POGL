@@ -41,10 +41,6 @@ public class PaquetCartes<T> {
         defausse.clear();
     }
 
-    //pour tests
-    public int taillePioche() { return pioche.size(); }
-    public int tailleDefausse() { return defausse.size(); }
-
     //retire definitivement une carte (cas zone submergee)
     public void retirerCarte(T c) {
         pioche.remove(c);

@@ -138,7 +138,6 @@ public class Ile extends Observable {
 
     //Inonde une zone aleatoire et retourne la zone inondee
     public Point inonderAleatoireEtRetourne() {
-        while (true) {
             Point p = paquetZones.piocher();//Tire une carte du paquet de zones
             if (p == null) return null;
 
@@ -153,7 +152,6 @@ public class Ile extends Observable {
 
             notifyObservers();
             return p;
-        }
     }
 
     //defaut une carte du paquet des joueurs
