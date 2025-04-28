@@ -10,10 +10,10 @@ public class TestGeneral {
     @Test public void z3(){ Zone z=new Zone(); z.inonder(); z.inonder(); assertEquals(Zone.Etat.SUBMERGEE,z.getEtat()); }
     @Test public void z4(){ Zone z=new Zone(); z.inonder(); z.assecher(); assertEquals(Zone.Etat.NORMALE,z.getEtat()); }
 
-    @Test public void ze(){ ZoneElementaire ze=new ZoneElementaire(Element.EAU); assertTrue(ze.estElementaire()); }
+    @Test public void ze1(){ ZoneElementaire ze=new ZoneElementaire(Element.EAU); assertTrue(ze.estElementaire()); }
     @Test public void ze2(){ assertEquals(Element.FEU,new ZoneElementaire(Element.FEU).getElement()); }
 
-    @Test public void hp(){ Heliport h=new Heliport(); assertTrue(h.estHeliport()); }
+    @Test public void hp1(){ Heliport h=new Heliport(); assertTrue(h.estHeliport()); }
     @Test public void hp2(){ assertFalse(new Heliport().estElementaire()); }
 
     @Test public void ct1(){ CarteTirage c=new CarteTirage(CarteTirage.Type.CLE,Element.AIR); assertEquals(CarteTirage.Type.CLE,c.getType()); }
@@ -31,6 +31,8 @@ public class TestGeneral {
     @Test public void j2(){ assertFalse(new Joueur(0,0).possedeCle(Element.FEU)); }
     @Test public void j3(){ Joueur j=new Joueur(0,0); j.ajouterCle(Element.AIR); assertTrue(j.recupererArtefact(new ZoneElementaire(Element.AIR))); }
     @Test public void j4(){ assertFalse(new Joueur(0,0).recupererArtefact(new ZoneElementaire(Element.AIR))); }
+    @Test public void rec1(){ Joueur j=new Joueur(0,0); j.ajouterCle(Element.EAU); assertTrue(j.recupererArtefact(new ZoneElementaire(Element.EAU))); assertTrue(j.artefacts().contains(Element.EAU)); assertFalse(j.possedeCle(Element.EAU)); }
+    @Test public void rec2(){ assertFalse(new Joueur(0,0).recupererArtefact(new Zone())); }
 
     @Test public void d1(){ Ile ile=new Ile(); Joueur j=new Joueur(2,4); j.deplacer(0,1,ile); assertEquals(5,j.getY()); }
     @Test public void d2(){ Ile ile=new Ile(); Joueur j=new Joueur(2,4); j.deplacer(1,1,ile); assertEquals(2,j.getX()); assertEquals(4,j.getY()); }
@@ -39,9 +41,13 @@ public class TestGeneral {
 
     @Test public void s1(){ Joueur j=new Joueur(0,0); j.ajouterSacDeSable(); assertEquals(1,j.getSacsDeSable()); }
     @Test public void s2(){ Ile ile=new Ile(); Joueur j=new Joueur(2,4); j.ajouterSacDeSable(); ile.getZone(2,5).inonder(); j.utiliserSacDeSable(ile,2,5); assertEquals(Zone.Etat.NORMALE,ile.getZone(2,5).getEtat()); assertEquals(0,j.getSacsDeSable()); }
+    @Test public void s3(){ Joueur j=new Joueur(0,0); j.utiliserSacDeSable(new Ile(),0,0); assertEquals(0,j.getSacsDeSable()); }
+    @Test public void s4(){ Ile ile=new Ile(); Joueur j=new Joueur(2,4); j.ajouterSacDeSable(); j.utiliserSacDeSable(ile,-1,-1); assertEquals(1,j.getSacsDeSable()); }
 
     @Test public void h1(){ Joueur j=new Joueur(0,0); j.ajouterHelico(); assertEquals(1,j.getHelicos()); }
     @Test public void h2(){ Ile ile=new Ile(); Joueur j=new Joueur(2,4); j.ajouterHelico(); j.utiliserHelico(3,4,ile); assertEquals(3,j.getX()); }
+    @Test public void h3(){ Joueur j=new Joueur(0,0); j.utiliserHelico(1,1,new Ile()); assertEquals(0,j.getHelicos()); assertEquals(0,j.getX()); }
+    @Test public void h4(){ Ile ile=new Ile(); Point p=ile.inonderAleatoireEtRetourne(); ile.getZone(p.x,p.y).inonder(); ile.getZone(p.x,p.y).inonder(); Joueur j=new Joueur(0,0); j.ajouterHelico(); j.utiliserHelico(p.x,p.y,ile); assertEquals(1,j.getHelicos()); assertEquals(0,j.getX()); }
 
     @Test public void ile1(){ Ile ile=new Ile(); assertEquals(10,ile.getRows()); }
     @Test public void ile2(){ assertTrue(new Ile().estIle(2,4)); }
