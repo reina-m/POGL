@@ -1,5 +1,4 @@
 import java.util.*;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,22 +7,21 @@ import java.util.List;
 public class Controlleur implements ActionListener {
 
     //Attributs Modele et vue
-    private Ile ile;
-    private Vue vue;
+    private final Ile ile;
+    private final Vue vue;
 
     //Attributs Etat du jeu
     private int joueurCourant = 0;
     private int actionsRestantes = 3;
-    private int tour;
     private int niveauEau = 2; // pour augmenter le nombre de zones innondées après chaque tour
-    private CarteTirage derniereCarte; // stocke la carte piochée du tour
-    private List<Point> dernieresInondations = new ArrayList<>();
+    private final List<Point> dernieresInondations = new ArrayList<>();
 
     public enum ModeSpecial { NORMAL, SABLE, HELICO }
     private ModeSpecial mode = ModeSpecial.NORMAL;
 
     //constructeur
-    public Controlleur(Ile ile, Vue vue) {
+    public Controlleur(Ile ile,
+                       Vue vue) {
         this.ile = ile;
         this.vue = vue;
     }
@@ -52,7 +50,7 @@ public class Controlleur implements ActionListener {
             vue.afficherMessage("Le paquet est vide.");
             return;
         }
-        derniereCarte = c;
+        // stocke la carte piochée du tour
         switch(c.getType()) {
             case CLE -> {
                 j.ajouterCle(c.getElement());

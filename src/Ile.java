@@ -3,9 +3,9 @@ import java.awt.*;
 import java.util.List;
 
 public class Ile extends Observable {
-    private Zone[][] grille; //Grille represetant l'ile
+    private final Zone[][] grille; //Grille represetant l'ile
     private final int rows= 10, cols = 10; //Dimension de la grille
-    private Joueur[] joueurs = new Joueur[4];//Liste joueur
+    private final Joueur[] joueurs = new Joueur[4];//Liste joueur
     private Point coordHeliport; //Coordonnées de l'heliport
     private PaquetCartes<Point> paquetZones; // paquet pour les zones a inonder`
     private PaquetCartes<CarteTirage> paquetCartesJoueur; // paquet pioche des joueurs
@@ -116,6 +116,7 @@ public class Ile extends Observable {
 
     //Fonction pour innonder aleatoirement la grille apres chaque fin de tour
     //utilise paquet pour inonder
+    // non utilisée actuellement après l'innodation avec un niveau qui augmente à chaque fois
     public void inonderAleatoire() {
         int c = 0;
         while (c < 3) {

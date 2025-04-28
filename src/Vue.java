@@ -1,7 +1,6 @@
 import java.awt.*;
-import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
-import java.awt.image.BufferedImage;
 
 //Constructeur
 //Initialise fenetre principale du jeu
@@ -9,15 +8,13 @@ import java.awt.image.BufferedImage;
 //Assemble les elements de linterface
 //Applique la police personnalise a toute linterface
 class Vue extends JPanel {
-    private VueIle vueIle;
-    private VueJoueurs vueJoueurs;
-    private VueCommande vueCmd;
-    private Ile ile;
+    private final VueIle vueIle;
+    private final VueJoueurs vueJoueurs;
+    private final VueCommande vueCmd;
 
     //Constructeur
     public Vue(Ile ile) {
         //setResizable(false);
-        this.ile = ile;
         //setTitle("L'Île Interdite");
         setSize(839, 670);
 
@@ -26,7 +23,7 @@ class Vue extends JPanel {
         setLayout(new BorderLayout());
         //setLocationRelativeTo(null); //Centre la fenetre
 
-        applyGlobalFont(pixelFont(10f));
+        applyGlobalFont(pixelFont());
 
         //Creation des differentes vues
         vueJoueurs = new VueJoueurs(this, ile);
@@ -35,7 +32,7 @@ class Vue extends JPanel {
         ile.addObserver(vueJoueurs);
 
         vueIle = new VueIle(ile, vueJoueurs);
-        vueIle.setMessageFont(pixelFont(10f));
+        vueIle.setMessageFont(pixelFont());
         ile.addObserver(vueIle);
 
         vueCmd = new VueCommande(ile, vueIle, vueJoueurs);
@@ -64,12 +61,12 @@ class Vue extends JPanel {
 
     //Charge une police personnalisee a partir du fichier Fonts
     //Si sa echoue une police monospace standard est utilise
-    protected Font pixelFont(float t) {
+    protected Font pixelFont() {
         try {
-            Font f = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/PT.ttf"));
-            return f.deriveFont(t);
+            Font f = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/fonts/PT.ttf")));
+            return f.deriveFont((float) 10.0);
         } catch (Exception e) { //Au cas ou
-            return new Font("Monospaced", Font.PLAIN, (int) t); //Fallback
+            return new Font("Monospaced", Font.PLAIN, (int) (float) 10.0); //Fallback
         }
     }
 

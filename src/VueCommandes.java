@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 
 class VueCommande extends JPanel {
@@ -25,10 +24,10 @@ class VueCommande extends JPanel {
         Insets padding = new Insets(5, 10, 5, 10);
 
         //Haut (actions restantes + toggle mode)
-        lblActionsRestantes = createLabel("Actions restantes: 3");
+        lblActionsRestantes = createLabel();
         JButton toggle = createButton("Mode : Déplacement", padding, "Cliquez pour changer le mode entre déplacement et assèchement");
 
-        toggle.addActionListener(e -> {
+        toggle.addActionListener(_ -> {
             modeAssechement = !modeAssechement;
             toggle.setText("Mode : " + (modeAssechement ? "Assèchement" : "Déplacement"));
         });
@@ -63,23 +62,23 @@ class VueCommande extends JPanel {
 
         JButton recupArtefact = createButton("Artefact", padding, "Tente de récupérer un artefact sur cette zone");
         recupArtefact.setAlignmentX(Component.CENTER_ALIGNMENT);
-        recupArtefact.addActionListener(e -> {
+        recupArtefact.addActionListener(_ -> {
             if (ctrl != null) ctrl.recupererArtefact();
         });
 
         finTour = createButton("Fin de tour", padding, "Terminer le tour et inonder trois zones aléatoires");
         finTour.setAlignmentX(Component.CENTER_ALIGNMENT);
-        finTour.addActionListener(e -> {
+        finTour.addActionListener(_ -> {
             if (ctrl != null) ctrl.finDeTour();
         });
         JButton btnSable = createButton("Sac de sable", padding, "Assécher n'importe quelle zone");
         btnSable.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btnSable.addActionListener(e -> {
+        btnSable.addActionListener(_ -> {
             if (ctrl != null) ctrl.activerSacDeSable();
         });
         JButton btnHelico = createButton("Hélicoptère", padding, "Se déplacer vers n'importe quelle zone");
         btnHelico.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btnHelico.addActionListener(e -> {
+        btnHelico.addActionListener(_ -> {
             if (ctrl != null) ctrl.activerHelico();
         });
         bottomPanel.add(btnSable);
@@ -97,7 +96,7 @@ class VueCommande extends JPanel {
     //Cree un boutton de direction(haut, bas , gauche, droite)
     private JButton createDirectionButton(String label, Insets padding, String tooltip, int dx, int dy, Ile ile, VueIle vueIle, VueJoueurs vueJoueurs) {
         JButton btn = createButton(label, padding, tooltip);
-        btn.addActionListener(e -> {
+        btn.addActionListener(_ -> {
             if (ctrl != null) {
                 if (modeAssechement || (dx == 0 && dy == 0)) {
                     ctrl.effectuerAction(() -> vueJoueurs.assecher(ile, dx, dy));
@@ -118,8 +117,8 @@ class VueCommande extends JPanel {
     }
 
     //Cree un label stylise
-    private JLabel createLabel(String text) {
-        JLabel lbl = new JLabel(text, SwingConstants.CENTER);
+    private JLabel createLabel() {
+        JLabel lbl = new JLabel("Actions restantes: 3", SwingConstants.CENTER);
         lbl.setFont(new Font("Arial", Font.BOLD, 14));
         lbl.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         return lbl;

@@ -1,5 +1,5 @@
 public class ZoneElementaire extends Zone {
-    private Element element;
+    private final Element element;
 
     //Constructeur
     public ZoneElementaire(Element element) {

@@ -4,8 +4,8 @@ import java.util.*;
 //pas besoin de tester car j'utilise beaucoup de fonctions déjà fournies en java
 
 public class PaquetCartes<T> {
-    private LinkedList<T> pioche = new LinkedList<>(); //pioche principale
-    private List<T> defausse = new ArrayList<>(); //cartes defaussees
+    private final LinkedList<T> pioche = new LinkedList<>(); //pioche principale
+    private final List<T> defausse = new ArrayList<>(); //cartes defaussees
 
     // constructeur
     public PaquetCartes(Collection<T> cartes) {

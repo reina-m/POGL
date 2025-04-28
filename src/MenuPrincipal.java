@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.Objects;
 
 //Class qui contrsuit le menu principale +le texte +l'image
 class MenuPrincipal extends JPanel {
@@ -42,8 +43,8 @@ class MenuPrincipal extends JPanel {
         quitterBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //Actions des boutons
-        jouer.addActionListener(e -> lancerPartie.run());
-        quitterBtn.addActionListener(e -> quitter.run());
+        jouer.addActionListener(_ -> lancerPartie.run());
+        quitterBtn.addActionListener(_ -> quitter.run());
 
         //Ajout des elements au panneau
         add(Box.createVerticalGlue());
@@ -60,7 +61,7 @@ class MenuPrincipal extends JPanel {
     //charge de police pixel
     private Font loadPixelFont(float size) {
         try {
-            return Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/PT.ttf")).deriveFont(size);
+            return Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/fonts/PT.ttf"))).deriveFont(size);
         } catch (Exception e) {
             return new Font("Monospaced", Font.PLAIN, (int) size);
         }
@@ -72,7 +73,7 @@ class Img extends JComponent {
     private final Image image;
 
     public Img(String path) {
-        image = new ImageIcon(getClass().getResource("/" + path)).getImage();
+        image = new ImageIcon(Objects.requireNonNull(getClass().getResource("/" + path))).getImage();
 
         //Redimensionne image x5 plus grande
         int w = image.getWidth(null) * 5;

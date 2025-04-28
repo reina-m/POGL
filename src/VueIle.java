@@ -18,7 +18,7 @@ class VueIle extends JPanel implements Observer {
         add(msgs); // add overlay component
         msgs.setBounds(0, 0, 640, 640);
         setLayout(null);
-        new Timer(100, e -> repaint()).start();
+        new Timer(100, _ -> repaint()).start();
         update();
     }
 

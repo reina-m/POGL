@@ -3,8 +3,8 @@ public class CarteTirage {
     //Enum representant les differents types de cartes
     public enum Type { CLE, MONTEE_DES_EAUX, SAC_SABLE, HELICOPTERE }
 
-    private Type type; //Type de carte
-    private Element element; // null sauf si type == CLE
+    private final Type type; //Type de carte
+    private final Element element; // null sauf si type == CLE
 
     //Constructeur pour initialiser le type de carte et l'element associe
     public CarteTirage(Type type, Element element) {

@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
-import java.awt.image.BufferedImage;
 
 //Constructeur
 //Initialise grille vertcialle
@@ -9,10 +9,9 @@ import java.awt.image.BufferedImage;
 //lie linterface graphique d lile
 //Cree icone cliquable pour chaque joueurs
 class VueJoueurs extends JPanel implements Observer {
-    private JLabel[] icones= new JLabel[4];
-    private JLabel[] infoLabels = new JLabel[4];
-    private Ile ile;
-    private Joueur[] joueurs;
+    private final JLabel[] icones= new JLabel[4];
+    private final Ile ile;
+    private final Joueur[] joueurs;
     private int joueurSelectionne = 0;
 
     public VueJoueurs(Vue vue, Ile ile) {
@@ -27,14 +26,14 @@ class VueJoueurs extends JPanel implements Observer {
                 Color.decode("#a4fcec")
         };
 
-        Font px = vue.pixelFont(10f);
+        Font px = vue.pixelFont();
 
         for (int i = 0; i < 4; i++) {
             int p = i;
             JPanel joueurPanel = new JPanel();
             joueurPanel.setLayout(new BoxLayout(joueurPanel, BoxLayout.X_AXIS));
 
-            JLabel icon = new JLabel(new ImageIcon(getClass().getResource("/img/j" + i + ".png")));
+            JLabel icon = new JLabel(new ImageIcon(Objects.requireNonNull(getClass().getResource("/img/j" + i + ".png"))));
             icon.setPreferredSize(new Dimension(82, 82));
             icon.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
             icon.setOpaque(true);
@@ -53,6 +52,7 @@ class VueJoueurs extends JPanel implements Observer {
             infos.setPreferredSize(new Dimension(150, 96));
             infos.setMaximumSize(new Dimension(150, 96));
             infos.setMinimumSize(new Dimension(150, 96));
+            JLabel[] infoLabels = new JLabel[4];
             infoLabels[i] = infos;
             infosPanel.add(infos);
 
