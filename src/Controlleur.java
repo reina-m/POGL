@@ -133,11 +133,11 @@ public class Controlleur implements ActionListener {
         switch (mode) {
             case SABLE -> {
                 j.utiliserSacDeSable(ile, x, y);
-                vue.afficherMessage("Zone assechée avec 🪣 !");
+                vue.afficherMessage("Zone assechée avec le sac de sable !");
             }
             case HELICO -> {
                 j.utiliserHelico(x, y, ile);
-                vue.afficherMessage("Déplacement avec 🚁 !");
+                vue.afficherMessage("Déplacement avec l'hélicoptère !");
             }
             default -> { return; } // ignore si mode normal
         }
